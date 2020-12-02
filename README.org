@@ -1,0 +1,174 @@
+#+TITLE: PROG2002 -- Computer Graphics
+#+SUBTITLE: -- Exam Autumn 2020 --
+
+* Preliminary notes:
+
+- *Read this document entirely before you start*
+- *The exam will be carried out individually, NOT in groups.*
+- *Questions during the exam:*
+  + Any question must be posted via the [[https://git.gvk.idi.ntnu.no/course/prog2002/Exams/autumn2020/-/issues][Exam issue tracker]]. Questions not posted
+    in the issue tracker will be ignored. Questions and answers will be visible
+    by all the exam attendants.
+  + The purpose of the question cannot be other than clarifying on the tasks of
+    the exam. We don't provide help to solve problems of any type.
+- *Preparing an exam repository*
+  + In order to start your exam:
+    - Fork this repository.
+    - Make the forked repository *private*.
+    - Give access to the teaching team as *maintainers*:
+      + Rafael Palomar.
+      + Mekides Assefa Abebe.
+      + Leon Cinquemani.
+- *Use of code and libraries:*
+  + You can make use of the code *your group* developed during the assignments.
+  + The OpenGL standard and the libraries employed will be the same used in the
+    assignments. Ask the teaching team if you would like to use any other
+    library.
+- *Use of issue tracker and git:* Throughout the exam we expect that you use
+  your forked repo's issue tracker. Open issues for the bodies of work you are
+  planning. Indicate with a tag (e.g., =Working=) what you are currently working
+  on. Commit often, we expect about 1 commit per hour. This helps both you,
+  making less likely that you lose work done, and us, reducing the possibility
+  of plagiarism.
+
+* Deliverables and deadlines
+- D1 :: Registration in the exam wiki -- **Deadline Dec, 7th 11.59am**. /You
+  need to 1) register the url of your repository; 2) make sure your repository
+  has **private** visibility; an 3) Check the oral exam slot and contact the
+  teaching team (e-mail) if you cannot make it at the appointed time.
+- D2 :: Self-evaluation issue in your issue tracker -- **Deadline Dec, 10th
+  8:59am**. /Copy [[https://git.gvk.idi.ntnu.no/course/prog2002/Exams/autumn2020/-/issues/1][issue #1]] from the Exam repository to your own exam repository
+  for using it as a template/.
+- D3 :: Repository with your exam -- **Deadline Dec, 10th 08.59am**.
+
+
+* Introduction
+
+The topic of the exam is rendering of a landscape. The terrain will be based on
+a gray-scale [[https://en.wikipedia.org/wiki/Heightmap][heightmap]]. The scene should be either textured, or setting a
+sensible color depending on the elevation. The landscape should, at least, have
+a forest line (and additionally a lake). The scene should be lit by sunlight
+(additionaly in a day/night cycle). The scene should contain 3D models moving in
+the scene. Interaction mechanisms to explore the scene should be provided (i.e.,
+free navigation of the scene with the mouse and keyboard).
+
+* Tasks
+
+There are *3 tasks*, each consisting of (a) main task and (b) additional
+features. Each main tasks has the same scoring weight. To pass the exam, at
+least *two* of the main tasks need to be completed. To increase the grade you
+need to address all the three main tasks. There are additional features that can
+give extra points (up to 10% of the exam grade). To some degree, these
+additional features can compensate for some partially-solved main tasks (be
+aware that the weight of the main tasks is greater than the additional features:
+*good additional features won't compensate for bad main tasks*).
+
+** Task 1: Scene rendering
+
+*** Main task
+
+- [ ] Load one of the heightmaps provided as a resource in this repository.
+- [ ] Create the geometry of the scenario based on the heightmap. /The height
+  representation does not need to correspond to actual geographic metrics, but
+  it should be distinguisable for the observer./
+- [ ] Assign colors depending on the elevation level. /You can stratify
+  in levels (e.g, brown for the lowest levels, green for medium
+  levels, white for high-elevation; you can choose your own colors)./
+- [ ] Illuminate the scene modeling sunlight by using the Phong model (ambient +
+  diffuse + specular). TIP: a, way to compute normals can be found [[https://stackoverflow.com/q/13983189][here]].
+
+*** Alternative main task
+
+- _If you are unable to load and render the terrain based on heighmaps_ you can
+  generate a flat terrain. With this option you will only obtain 25% on this
+  task and, to some extent, it will penalize you in task 3.
+
+
+*** Additional features
+
+- [ ] Implement a [[https://en.wikipedia.org/wiki/Skybox_(video_games)][Skybox]].
+- [ ] Add different textures to the terrain.
+- [ ] Implement water (e.g., lakes, rivers, ponds).
+- [ ] Implement rain or snow.
+- [ ] Implement shadowing.
+
+** Task 2: Moving cameras and lights
+
+*** Main task
+
+- [ ] Implement a free-moving camera. Orientation is controlled by the mouse and
+  movement is controlled by the WASD keys.
+- [ ] Implement day/night cycle. The colours should change throughout the cycle:
+  white ad midday, yellowish at evening/morning and red/oragne at dusk/dawn; set
+  night light to some dim ambient dark blue color (or any other color choice).
+- [ ] Make a perspective switch (3rd person and 1st person). 3rd person should
+  follow one of the moving objects of task 3, as well as let you change the
+  angle of view.
+
+*** Additional features
+
+- [ ] Add a mini-map showing the position of the viewer in the scenario (for 1st person).
+- [ ] Allow the user to control the speed of day/night cycle using a GUI.
+- [ ] Integrate zooming functionality for the camera (e.g., in 1st person, left
+  mouse button will zoom to the center of the scene).
+- [ ] Add underwater effect (e.g., when the viewer is underwater the color
+  becomes blue; you can add fog effect underwater).
+- [ ] Add specular highlights on the water surface. You may use [[https://learnopengl.com/Advanced-Lighting/Normal-Mapping][normal mapping]].
+
+
+** Task 3: Placement of objects
+
+*** Main task
+
+- [ ] Populate the scenario with trees in the intermediate heights of the map
+  (green areas). There should be at least a few scattered over the scenario
+  (models are provided with the resources in this repository).
+  /The grade of this point will depend on the complexity of your solution./
+- [ ] Populate the scenario with at least one type of movable aerial object
+  (eagle and plane provided in the resources). The objects will move randomly in
+  its own environment (air) in 2D or in 3D.
+- [ ] Similarly to the previous point, populate the scenario with movable ground
+  objects. There are object provided in the resources (moose, deer). The models
+  should move ramdomly around in their own natural environment (ground). Ground
+  objects need to avoid moving through the ground, as well as avoid collition
+  with other movable objects and trees.**Note:** if you chose the alternative
+  task 1, you will only obtain a maximum of 50% of the score in this point.
+
+*** Additional features:
+
+- [ ] Enable 3D movement of aerial objects (always in the air).
+- [ ] Include water objects (fish, duck). The fish should move underwater and
+  can move in 2D (similar to aerial objects). The duck should move on the
+  surface of water.
+
+* Programming and code management
+
+In addition to the features described in the tasks and additional features, we
+will evaluate the quality of the code developed:
+
+** Structure
+- The code is separated in meaningful units (.h and .cpp files, possibly
+  compiled in separate libraries and linked together according to
+  functionality).
+- Correct CMake project definition.
+
+** Design
+- The design of your solution is sensible, elegant and efficient.
+
+** C++
+- Clean and clear code.
+- Meaningful use of modern C++ features.
+- Efficient code.
+
+** Documentation
+- Code documentation.
+- Readme file with documentation on how to build and use the software.
+
+
+* Penalties may be applied in the following circumstances:
+
+- OpenGL errors.
+- Unefficient coding.
+- Memory leaks.
+- Use of old OpenGL standards.
+- Other errors.
