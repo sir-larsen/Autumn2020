@@ -32,9 +32,9 @@
   of plagiarism.
 
 * Deliverables and deadlines
-- D1 :: Registration in the exam wiki -- **Deadline Dec, 7th 11.59am**. You need to 1) register the url of our repository; 2) make sure your repository has **private** visibility; an 3) Check the oral exam slot and contact the teaching team (e-mail) if you cannot make it at the appointed time.
-- D2 :: Self-evaluation issue in your issue tracker -- **Deadline Dec, 10th 8:59am**. Copy [[https://git.gvk.idi.ntnu.no/course/prog2002/Exams/autumn2020/-/issues/1][issue #1]] from the Exam repository to your own exam repository for using it as a template/.
-- D3 :: Repository with your exam -- **Deadline Dec, 10th 08.59am**.
+- D1 :: Registration in the exam wiki -- *Deadline Dec, 7th 11.59am*. You need to 1) register the url of our repository; 2) make sure your repository has *private* visibility; an 3) Check the oral exam slot and contact the teaching team (e-mail) if you cannot make it at the appointed time.
+- D2 :: Self-evaluation issue in your issue tracker -- *Deadline Dec, 10th 8:59am*. Copy [[https://git.gvk.idi.ntnu.no/course/prog2002/Exams/autumn2020/-/issues/1][issue #1]] from the Exam repository to your own exam repository for using it as a template/.
+- D3 :: Repository with your exam -- *Deadline Dec, 10th 08.59am*.
 
 
 * Introduction
@@ -66,9 +66,9 @@ aware that the weight of the main tasks is greater than the additional features:
 - [ ] Create the geometry of the scenario based on the heightmap. /The height
   representation does not need to correspond to actual geographic metrics, but
   it should be distinguisable for the observer./
-- [ ] Assign colors depending on the elevation level. /You can stratify
+- [ ] Assign colors depending on the elevation level. You can stratify
   in levels (e.g, brown for the lowest levels, green for medium
-  levels, white for high-elevation; you can choose your own colors)./
+  levels, white for high-elevation; you can choose your own colors).
 - [ ] Illuminate the scene modeling sunlight by using the Phong model (ambient +
   diffuse + specular). TIP: a, way to compute normals can be found [[https://stackoverflow.com/q/13983189][here]].
 
@@ -118,7 +118,7 @@ aware that the weight of the main tasks is greater than the additional features:
 - [ ] Populate the scenario with trees in the intermediate heights of the map
   (green areas). There should be at least a few scattered over the scenario
   (models are provided with the resources in this repository).
-  /The grade of this point will depend on the complexity of your solution./
+  The grade of this point will depend on the complexity of your solution.
 - [ ] Populate the scenario with at least one type of movable aerial object
   (eagle and plane provided in the resources). The objects will move randomly in
   its own environment (air) in 2D or in 3D.
@@ -126,7 +126,7 @@ aware that the weight of the main tasks is greater than the additional features:
   objects. There are object provided in the resources (moose, deer). The models
   should move ramdomly around in their own natural environment (ground). Ground
   objects need to avoid moving through the ground, as well as avoid collition
-  with other movable objects and trees.**Note:** if you chose the alternative
+  with other movable objects and trees.*Note:* if you chose the alternative
   task 1, you will only obtain a maximum of 50% of the score in this point.
 
 *** Additional features:
