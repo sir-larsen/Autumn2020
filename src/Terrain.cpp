@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2020
  * 
  */
-#include "Maze3D.h"
+#include "Terrain.h"
 #include "ScenarioLoader.h"
 #include "Camera.h"
 
@@ -29,39 +29,55 @@
  * @see	make2dArray();
  * @see	generateMaze();
  */
-Maze3D::Maze3D(ScenarioLoader* loadedLevel, Shader* shader, Renderer* renderer)
+Terrain::Terrain(ScenarioLoader* loadedLevel, Shader* shader, Renderer* renderer, int m_depth, int breadth, float m_step)
 	: m_LoadedLevel(loadedLevel),
 	  m_Renderer(renderer),
-	  m_Shader(shader),
-	  pelletCount(0)
+	  m_Shader(shader)
 {
-	width = m_LoadedLevel->getHorizontalSize();
-	height = m_LoadedLevel->getVerticalSize();
+	/*width = m_LoadedLevel->getHorizontalSize();
+	height = m_LoadedLevel->getVerticalSize();*/
 
-	map2d.resize(height, std::vector<int>(width));
-	make2dArray();
+	width = breadth;   //The x-direction of the landscape
+	depth = m_depth;   //The z-direction of the landscape. Setting this to minus values
+					   //so larger (negative) z values are more distant. (positive points toward screen)
+	step = m_step;
+
+	//map2d.resize(height, std::vector<int>(width));
+	//make2dArray();
 	generateMaze();
-	countPellets();
+	//countPellets();
 }
 
 /**
  * @brief Destroy the Maze:: Maze object
  * 
  */
-Maze3D::~Maze3D(){
-	free(mazeVAO);
+Terrain::~Terrain(){
+	/*free(mazeVAO);
 	free(mazeVBO);
 	free(mazeVBLayout);
-	free(mazeIBO);
+	free(mazeIBO);*/
 	free(Diffuse);
 	free(Specular);
+	free(nyggz);
+
+	/*free(floorVAO);
+	free(floorVBO);
+	free(floorVBLayout);
+	free(floorIBO);*/
+
+	free(nVAO);
+	free(nVBO);
+	free(nVBLayout);
+	free(nIBO);
+
 }
 
 /**
  * @brief Converts the 1D vector of the map from the ScenarioLoader into a 2D vector. 
  * 
  */
-void Maze3D::make2dArray()
+/*void Terrain::make2dArray()
 {
 	int index = 0;
 	for (int i = 0; i < height; i++)
@@ -71,30 +87,74 @@ void Maze3D::make2dArray()
 			map2d[i][j] = m_LoadedLevel->mazeMap[index++];
 		}
 	}
-}
+}*/
 
-std::vector<std::vector<int>> Maze3D::getMap()
+/*std::vector<std::vector<int>> Terrain::getMap()
 {
 	return map2d;
-}
+}*/
 
 /**
  * @brief Generates the indices for each square in the maze.
  * NOT IN USE ANYMORE
  */
-void Maze3D::makeIndices()
+/*void Terrain::makeIndices()
 {
 	
-}
+}*/
 
 /**
  * @brief Generates positions to be used by the squares.
  * 
  */
-void Maze3D::makePositionsAndIndices()
+void Terrain::makePositionsAndIndices()
 {
+	Vertex terrain;
 	int indexOff = 0;
 	glm::vec3 offset;
+
+	int vertices_width = width;
+	int vertices_depth = depth;
+
+	for (int vx = 0; vx < vertices_width; vx++) {
+		for (int vz = 0; vz < vertices_depth; vz++) {
+			offset = glm::vec3(vx, 0.0f, vz);
+			float vy = 0.0f; // =getHeight(vx, vz); When height introduced
+
+			terrain.location = offset + glm::vec3(0.0f * step, vy, 0.0f * step);
+			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(0.0f * step, 1.0f, 0.0f * step);
+			terrain.texCoords = glm::vec2(0.0f, 0.0f);
+			tVertices.push_back(terrain);
+
+			terrain.location = offset + glm::vec3(0.0f * step, vy, 1.0f * step);
+			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(0.0f * step, 1.0f, 1.0f * step);
+			terrain.texCoords = glm::vec2(1.0f, 0.0f);
+			tVertices.push_back(terrain);
+
+			terrain.location = offset + glm::vec3(1.0f * step, vy, 1.0f * step);
+			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(1.0f * step, 1.0f, 1.0f * step);
+			terrain.texCoords = glm::vec2(1.0f, 1.0f);
+			tVertices.push_back(terrain);
+
+			terrain.location = offset + glm::vec3(1.0f * step, vy, 0.0f * step);
+			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(1.0f * step, 1.0f, 0.0f * step);
+			terrain.texCoords = glm::vec2(0.0f, 1.0f);
+			tVertices.push_back(terrain);
+
+			tIndices.push_back(indexOff + 0);
+			tIndices.push_back(indexOff + 1);
+			tIndices.push_back(indexOff + 2);
+			tIndices.push_back(indexOff + 2);
+			tIndices.push_back(indexOff + 3);
+			tIndices.push_back(indexOff + 0);
+			indexOff += 4;
+		}
+	}
+
+
+
+
+
 
 	Vertex nyggz;
 	nyggz.location = glm::vec3(10.f, 4.f, 10.f);
@@ -127,7 +187,7 @@ void Maze3D::makePositionsAndIndices()
 	
 	
 
-	//Adding floor
+	/*//Adding floor
 	Vertex floor;
 	floor.location  = glm::vec3(-10.0f, 0.0f, -10.0f);
 	floor.normals   = glm::vec3(-10.0f, 1.0f, -10.0f);
@@ -154,12 +214,12 @@ void Maze3D::makePositionsAndIndices()
 	floorIndices.push_back(indexOff + 2);
 	floorIndices.push_back(indexOff + 2);
 	floorIndices.push_back(indexOff + 3);
-	floorIndices.push_back(indexOff + 0);
+	floorIndices.push_back(indexOff + 0);*/
 
 
 
 
-	int height2, width2;
+	/*int height2, width2;
 	height2 = 36, width2 = 28;
 	for (int i = 0; i < height2; i++) {
 		for (int j = 0; j < width2; j++) {
@@ -372,11 +432,11 @@ void Maze3D::makePositionsAndIndices()
 				mapIndices.push_back(indexOff + 2);
 				mapIndices.push_back(indexOff + 3);
 				mapIndices.push_back(indexOff + 0);
-				indexOff += 4;*/
+				indexOff += 4;
 
 			}
 		}
-	}
+	}*/
 }
 
 
@@ -386,12 +446,12 @@ void Maze3D::makePositionsAndIndices()
  * @see makePositions();
  * @see makeIndices();
  */
-void Maze3D::generateMaze()
+void Terrain::generateMaze()
 {
 	makePositionsAndIndices();
 	//makeIndices();
 
-	mazeVAO = new VertexArray;
+	/*mazeVAO = new VertexArray;
 	mazeVAO->Bind();
 	mazeVBO = new VertexBuffer(&maze3DVertices[0], maze3DVertices.size() * sizeof(Vertex));
 	mazeVBO->Bind();
@@ -415,7 +475,22 @@ void Maze3D::generateMaze()
 	floorVBLayout->Push<float>(2);
 
 	floorVAO->AddBuffer(*floorVBO, *floorVBLayout);
-	floorIBO = new IndexBuffer(&floorIndices[0], floorIndices.size());
+	floorIBO = new IndexBuffer(&floorIndices[0], floorIndices.size());*/
+
+	//Terrain
+	tVAO = new VertexArray;
+	tVAO->Bind();
+	tVBO = new VertexBuffer(&tVertices[0], tVertices.size() * sizeof(Vertex));
+
+	tVBLayout = new VertexBufferLayout;
+	tVBLayout->Push<float>(3);
+	tVBLayout->Push<float>(3);
+	tVBLayout->Push<float>(2);
+
+	tVAO->AddBuffer(*tVBO, *tVBLayout);
+	tIBO = new IndexBuffer(&tIndices[0], tIndices.size());
+	//**************
+
 
 	//Nyggz
 	nVAO = new VertexArray;
@@ -449,18 +524,18 @@ void Maze3D::generateMaze()
 /**
  * @brief Counts how many !1 occour in the maze, counting how many "pellets" exists
 */
-void Maze3D::countPellets()
+/*void Terrain::countPellets()
 {
 	for (int i = 0; i < m_LoadedLevel->mazeMap.size(); i++)
 		if (m_LoadedLevel->mazeMap[i] != 1)
 			pelletCount++;
-}
+}*/
 
 /**
  * @brief Draws the maze. 
  * 
  */
-void Maze3D::draw(glm::mat4 projection, glm::mat4 view, const float dt)
+void Terrain::draw(glm::mat4 projection, glm::mat4 view, const float dt)
 {
 	m_Shader->use();
 	m_Shader->setMat4("u_ProjectionMat", projection);
@@ -468,11 +543,12 @@ void Maze3D::draw(glm::mat4 projection, glm::mat4 view, const float dt)
 	Transform(dt);
 	Diffuse->Bind(0);
 	Specular->Bind(1);
-	m_Renderer->Draw(mazeVAO, mazeIBO, m_Shader);
-	m_Renderer->Draw(floorVAO, floorIBO, m_Shader);
+	//m_Renderer->Draw(mazeVAO, mazeIBO, m_Shader);
+	//m_Renderer->Draw(floorVAO, floorIBO, m_Shader);
 	nyggz->Bind(0);
 	nyggz->Bind(1);
-	m_Renderer->Draw(nVAO, nIBO, m_Shader);
+	//m_Renderer->Draw(nVAO, nIBO, m_Shader);
+	m_Renderer->Draw(tVAO, tIBO, m_Shader);
 
 
 	/*m_Shader->camera(projection,view);
@@ -488,7 +564,7 @@ void Maze3D::draw(glm::mat4 projection, glm::mat4 view, const float dt)
 * @brief Transforms the 3D maze
 * @param dt - Delta time, will be used if one would want to rotate the maze
 */
-void Maze3D::Transform(float dt)
+void Terrain::Transform(float dt)
 {
 	glm::mat4 translation = glm::translate(glm::mat4(1), glm::vec3(0.f));
 	glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(1.f));
@@ -497,9 +573,9 @@ void Maze3D::Transform(float dt)
 	
 }
 
-void Maze3D::Light(const float dt, Camera* camera)
+void Terrain::Light(const float dt, Camera* camera)
 {
-	m_Shader->setVec3("dirLight.direction", 0.3f, 1.f, 0.2f);
+	m_Shader->setVec3("dirLight.direction", 0.4f, 0.9f, 0.2f);
 	m_Shader->setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
 	m_Shader->setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
 	m_Shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
@@ -514,7 +590,7 @@ void Maze3D::Light(const float dt, Camera* camera)
 
 }
 
-glm::vec3 Maze3D::findSpawn()
+/*glm::vec3 Terrain::findSpawn()
 {
 	for (int y = 0; y < height; y++)
 		for (int x = 0; x < width; x++)
@@ -523,4 +599,4 @@ glm::vec3 Maze3D::findSpawn()
 				return glm::vec3((float)x + .5f, 0.5f, (float)y + .5f);
 			}
 
-}
+}*/

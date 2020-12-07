@@ -28,17 +28,29 @@ struct Vertex {
 };
 
 /**
- * @class Maze
+ * @class Terrain
  * @brief Handles the creation and drawing of the maze. 
  */
-class Maze3D
+class Terrain
 {
 private:
-	int width,
-		height,
-		pelletCount;
+	int width, depth;
+	float step; //Step value for grid. Higher step, more distance between vertices
 
 	ScenarioLoader* m_LoadedLevel;
+
+	//Landscape and everything needed
+	std::vector <Vertex>	   tVertices;
+	std::vector <unsigned int> tIndices;
+
+	VertexArray*        tVAO;
+	VertexBuffer*       tVBO;
+	IndexBuffer*        tIBO;
+	VertexBufferLayout* tVBLayout;
+
+
+	//*********************************
+
 	std::vector <unsigned int> mapIndices;
 	std::vector <glm::vec3> mazePositions;
 	std::vector <Vertex> maze3DVertices;
@@ -80,21 +92,21 @@ public:
 	Shader* m_Shader;
 	std::vector<std::vector<int>> map2d;
 
-	Maze3D(ScenarioLoader* loadedLevel, Shader* shader, Renderer* renderer);
-	~Maze3D();
+	Terrain(ScenarioLoader* loadedLevel, Shader* shader, Renderer* renderer, int m_depth, int breadth, float m_step);
+	~Terrain();
 
 	void draw(glm::mat4 projection, glm::mat4 view, const float dt);
-	std::vector <glm::vec3> getMazePositions() { return mazePositions; }
+	/*std::vector <glm::vec3> getMazePositions() { return mazePositions; }
 	int getHeight()	{ return height; }
 	int getWidth()	{ return width; }
 	int getPelletCount() { return pelletCount; }
-	std::vector<std::vector<int>> getMap();
+	std::vector<std::vector<int>> getMap();*/
 	void Transform(float dt);
 	void Light(const float dt, Camera* camera);
-	glm::vec3 findSpawn();
+	//glm::vec3 findSpawn();
 private:
-	void countPellets();
-	void make2dArray();
+	/*void countPellets();
+	void make2dArray();*/
 	void makeIndices();
 	void makePositionsAndIndices();
 	void generateMaze();

@@ -6,7 +6,7 @@
 #include "src/Renderer.h"
 #include "src/model.h"
 
-#include "src/Maze3D.h"
+#include "src/Terrain.h"
 #include "src/stb_image.h"
 
 #include <glm/glm.hpp>
@@ -18,7 +18,6 @@
 #include <set>
 #include <iostream>
 #include <iomanip>
-#include "src/Maze3D.h"
 
 /*struct Vertex
 {
@@ -141,229 +140,12 @@ int main(void)
 	//Shader			shader("shaders/camera2.glsl");
 	Shader			shader("shaders/mazeVS.glsl", "shaders/mazeFS.glsl");
 	Renderer		renderer;
-	Maze3D			maze(&scenario, &shader, &renderer);
-	camera =        new Camera(/*glm::vec3(0.0f, 0.0f, 3.0f)*/maze.findSpawn());
+	Terrain			terrain(&scenario, &shader, &renderer, 100, 100, 1.0);
+	camera =        new Camera(glm::vec3(50.0f, 0.5f, 0.0f));
 
 	Model ghost("res/ghost/Ghost.obj");
 	Shader ghostShader/*= new Shader*/("shaders/ghostVS.glsl", "shaders/ghostFS.glsl");
 
-
-
-
-
-	/*int indexOff = 0;
-	glm::vec3 offset;
-
-	int height, width;
-	height = 36, width = 28;
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
-			offset = glm::vec3(i, 0.0f, j);
-
-			//Adding 24 vertices and 36 indices
-			if (i < map.size() && j < map[i].size() && map[i][j] == 1) {
-				Vertex vertex3dNormTex;
-
-				//Adding bottom face
-
-				vertex3dNormTex.location  = offset + glm::vec3(0.0f, 0.0f, 0.0f);
-				vertex3dNormTex.normals   = glm::vec3(0.0f, -1.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 0.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, -1.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 0.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, -1.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, -1.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				mapIndices.push_back(indexOff + 0);
-				mapIndices.push_back(indexOff + 1);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 3);
-				mapIndices.push_back(indexOff + 0);
-				indexOff += 4;
-
-				//Adding top face
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 1.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 1.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 1.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 1.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 1.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 1.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 1.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 1.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				mapIndices.push_back(indexOff + 0);
-				mapIndices.push_back(indexOff + 1);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 3);
-				mapIndices.push_back(indexOff + 0);
-				indexOff += 4;
-
-				//Adding left face
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 0.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(-1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 0.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(-1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 1.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(-1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 1.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(-1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				mapIndices.push_back(indexOff + 0);
-				mapIndices.push_back(indexOff + 1);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 3);
-				mapIndices.push_back(indexOff + 0);
-				indexOff += 4;
-
-				//Adding right face
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 0.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 1.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 1.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				mapIndices.push_back(indexOff + 0);
-				mapIndices.push_back(indexOff + 1);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 3);
-				mapIndices.push_back(indexOff + 0);
-				indexOff += 4;
-
-				//Adding north face
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 0.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 0.0f, -1.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 0.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 0.0f, -1.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 1.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 0.0f, -1.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 1.0f, 0.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 0.0f, -1.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				mapIndices.push_back(indexOff + 0);
-				mapIndices.push_back(indexOff + 1);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 3);
-				mapIndices.push_back(indexOff + 0);
-				indexOff += 4;
-
-				//Adding south face
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 0.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 0.0f, 1.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 0.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 0.0f, 1.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(1.0f, 1.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 0.0f, 1.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				vertex3dNormTex.location = offset + glm::vec3(0.0f, 1.0f, 1.0f);
-				vertex3dNormTex.normals = glm::vec3(0.0f, 0.0f, 1.0f);
-				vertex3dNormTex.texCoords = glm::vec2(0.0f, 0.0f);
-				vertices.push_back(vertex3dNormTex);
-
-				mapIndices.push_back(indexOff + 0);
-				mapIndices.push_back(indexOff + 1);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 2);
-				mapIndices.push_back(indexOff + 3);
-				mapIndices.push_back(indexOff + 0);
-				indexOff += 4;
-
-			}
-
-
-		}
-	}*/
-
-
-	/*for (int i = 0; i < 36; i++) {
-		for (int j = 0; j < 28; j++) {
-			/*if (map[i][j] == 1) {
-				GLuint cubeVao = createCube((GLfloat)j, (GLfloat)j + 1, (GLfloat)i, (GLfloat)i + 1);
-				gCubes.push_back(cubeVao);
-			}
-			if (map[i][j] == 2) {
-				cameraPos = glm::vec3((GLfloat)i+0.5f, 0.5f, (GLfloat)j+0.5f);
-				std::cout << "i: " << i << " j: " << j << std::endl;
-			}
-		}
-	}*/
-
-	//GLuint mazeVAO = createMaze();
-
-	
-	//GLuint vao = createCube(0.f, 1.f, 0.f, 1.f);
-	//GLuint shaderProgram = CompileShader(VertexShaderSrc, /*directionalLightFragmentShaderSrc*/pointLightFragmentShaderSrc);
 
 	glfwSetTime(0);
 	/* Loop until the user closes the window */
@@ -376,15 +158,7 @@ int main(void)
 
 		glClearColor(0.2f, 0.2f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		/*glUseProgram(shaderProgram);
-		
-		GLuint vertexColorLocation = glGetUniformLocation(shaderProgram, "u_Color");
-		glUniform4f(vertexColorLocation, 0.1f, 0.9f, 0.1f, 1.0f);
-		glBindVertexArray(mazeVAO);
-		glDrawElements(GL_TRIANGLES, mapIndices.size(), GL_UNSIGNED_INT, (const void*)0);*/
-
-				
+			
 
 		/*if (cameraPos.y > 0.353f)
 			cameraPos.y = 0.35f;
@@ -392,55 +166,21 @@ int main(void)
 			cameraPos.y = 0.35f;*/
 		
 
-
-		/*maze.m_Shader->setVec3("dirLight.direction", 0.0f, -1.0f, 0.0f);
-		maze.m_Shader->setVec3("dirLight.ambient", 0.3f, 0.3f, 0.3f);
-		maze.m_Shader->setVec3("dirLight.diffuse", 0.1f, 0.1f, 0.1f);
-		maze.m_Shader->setVec3("dirLight.specular", 0.1f, 0.1f, 0.1f);*/
-
-
-		/*// point light 1
-		maze.m_Shader->setUniform3f("pointLight.position", camera.Position);
-		maze.m_Shader->setUniform3f("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-		maze.m_Shader->setUniform3f("pointLight.diffuse", 0.1f, 0.1f, 0.1f);
-		maze.m_Shader->setUniform3f("pointLight.specular", 0.1f, 0.1f, 0.1f);
-		maze.m_Shader->setUniform1f("pointLight.constant", 1.f);
-		maze.m_Shader->setUniform1f("pointLight.linear", 0.09);
-		maze.m_Shader->setUniform1f("pointLight.quadratic", 0.032);*/
-
-
-		//Spotlight
-		//maze.m_Shader->setUniform3f("spotLight.position", camera.Position);
-		//maze.m_Shader->setUniform3f("spotLight.direction", camera.Front);
-
-		/*glUniform3f(glGetUniformLocation(maze.m_Shader->ID, "spotLight.position"), camera->Position.x, camera->Position.y, camera->Position.z);
-		glUniform3f(glGetUniformLocation(maze.m_Shader->ID, "spotLight.direction"), camera->Front.x, camera->Front.y, camera->Front.z);
-
-		maze.m_Shader->setVec3("spotLight.ambient", 0.1f, 0.1f, 0.1f);
-		maze.m_Shader->setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-		maze.m_Shader->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-		maze.m_Shader->setFloat("spotLight.constant", 1.0f);
-		maze.m_Shader->setFloat("spotLight.linear", 0.09);
-		maze.m_Shader->setFloat("spotLight.quadratic", 0.032);
-		maze.m_Shader->setFloat("spotLight.cutOff", glm::cos(glm::radians(26.5f)));
-		maze.m_Shader->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(30.0f)));*/
-
-
 		// pass projection matrix to shader (note that in this case it could change every frame)
 		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 
 		// camera/view transformation
 		glm::mat4 view = camera->GetViewMatrix();
 
-		maze.m_Shader->use();
-		maze.Light(deltaTime, camera);
-		maze.draw(projection, view, deltaTime); //Draw call
+		terrain.m_Shader->use();
+		terrain.Light(deltaTime, camera);
+		terrain.draw(projection, view, deltaTime); //Draw call
 
 		/*Drawing of ghost object*/
 		ghostShader.use();
 		ghostShader.setMat4("u_ProjectionMat", projection);
 		ghostShader.setMat4("u_ViewMat", view);
-		glm::mat4 translation = glm::translate(glm::mat4(1), glm::vec3(maze.findSpawn()));
+		glm::mat4 translation = glm::translate(glm::mat4(1), glm::vec3(0.0f, 0.5f, 0.0f));
 		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(.3f));
 		//glm::mat4 rotation = glm::mat4(1);
 		glm::mat4 transformation = translation * /*rotation */ scale;
@@ -467,42 +207,9 @@ int main(void)
 
 	}
 
-	//glUseProgram(0);
-	//glDeleteProgram(shaderProgram);
-
-	//CleanVAO(squareVAO); //Rydder opp elns??
-	/*for (auto& val : gCubes) {
-		CleanVAO(val);
-	}*/
-
 	glfwTerminate();
 	return 0;
 }
-
-/*void setUniforms(Maze3D* maze)
-{
-	// point light 1
-	maze.m_Shader->setUniform3f("pointLight.position", glm::vec3(14, 3, 18));
-	maze.m_Shader->setUniform3f("pointLight.ambient", 0.05f, 0.05f, 0.05f);
-	maze.m_Shader->setUniform3f("pointLight.diffuse", 0.1f, 0.1f, 0.1f);
-	maze.m_Shader->setUniform3f("pointLight.specular", 0.1f, 0.1f, 0.1f);
-	maze.m_Shader->setUniform1f("pointLight.constant", 1.f);
-	maze.m_Shader->setUniform1f("pointLight.linear", 0.09);
-	maze.m_Shader->setUniform1f("pointLight.quadratic", 0.032);
-
-
-
-	maze.m_Shader->setUniform3f("spotLight.position", camera.Position);
-	maze.m_Shader->setUniform3f("spotLight.direction", camera.Front);
-	maze.m_Shader->setUniform3f("spotLight.ambient", 0.1f, 0.1f, 0.1f);
-	maze.m_Shader->setUniform3f("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-	maze.m_Shader->setUniform3f("spotLight.specular", 1.0f, 1.0f, 1.0f);
-	maze.m_Shader->setUniform1f("spotLight.constant", 1.0f);
-	maze.m_Shader->setUniform1f("spotLight.linear", 0.09);
-	maze.m_Shader->setUniform1f("spotLight.quadratic", 0.032);
-	maze.m_Shader->setUniform1f("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-	maze.m_Shader->setUniform1f("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
-}*/
 
 
 // -----------------------------------------------------------------------------
@@ -600,33 +307,6 @@ GLuint CompileShader(const std::string& vertexShaderSrc,
 	return shaderProgram;
 }
 
-/*GLuint createMaze()
-{
-	GLuint vao;
-	glCreateVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-	GLuint ebo;
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mapIndices.size() * sizeof(unsigned int), &mapIndices[0], GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0); //Enabling the positions in the shader
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (const void*)0);
-
-	glEnableVertexAttribArray(1); //Enabling the normals in the shader file
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 3));
-
-	//glEnableVertexAttribArray(2); //Enabling textures in the shader
-	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, (void*)(sizeof(float) * 6));
-
-	return vao;
-}*/
 
 GLuint createCube(GLfloat x0, GLfloat x1, GLfloat z0, GLfloat z1)
 {
@@ -697,65 +377,6 @@ void processInput(GLFWwindow* window)
 
 }
 
-/*void Camera2(const float time, const GLuint shaderprogram, float bevX, float bevY, float bevZ)
-{
-	
-	glm::mat4 projection = glm::perspective(glm::radians(fov), (float)1400 / 1000, 0.1f, 100.f);
-	//Creating our LookAt matrix
-	glm::mat4 view;					//for "strafing" effect
-	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
-	//Get unforms to place our matrices into
-	GLuint projmat = glGetUniformLocation(shaderprogram, "u_ProjectionMat");
-	GLuint viewmat = glGetUniformLocation(shaderprogram, "u_ViewMat");
-
-	//Send data from matrices to uniform
-	glUniformMatrix4fv(projmat, 1, false, glm::value_ptr(projection));
-	glUniformMatrix4fv(viewmat, 1, false, glm::value_ptr(view));
-}*/
-
-/*void Camera(const float time, const GLuint shaderprogram, float bevX, float bevY, float bevZ)
-{
-	//Matrix which helps project our 3D objects onto a 2D image. Not as relevant in 2D projects
-	//The numbers here represent the aspect ratio. Since our window is a square, aspect ratio here is 1:1, but this can be changed.
-	glm::mat4 projection = glm::perspective(90.f, 1.f, 0.1f, 60.f);
-
-	//Matrix which defines where in the scene our camera is
-	//                           Position of camera     Direction camera is looking     Vector pointing upwards
-	glm::mat4 view = glm::lookAt(glm::vec3(2.f + bevX, 5.f + bevY, 3.f + bevZ), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-
-	//Get unforms to place our matrices into
-	GLuint projmat = glGetUniformLocation(shaderprogram, "u_ProjectionMat");
-	GLuint viewmat = glGetUniformLocation(shaderprogram, "u_ViewMat");
-
-	//Send data from matrices to uniform
-	glUniformMatrix4fv(projmat, 1, false, glm::value_ptr(projection));
-	glUniformMatrix4fv(viewmat, 1, false, glm::value_ptr(view));
-}*/
-
-/*void Light(const float time, const GLuint shaderprogram)
-{
-	//Get uniforms for our Light-variables.
-	GLuint lightPos = glGetUniformLocation(shaderprogram, "u_LightPosition");
-	GLuint lightColor = glGetUniformLocation(shaderprogram, "u_LightColor");
-	GLuint lightDir = glGetUniformLocation(shaderprogram, "u_LightDirection");
-	GLuint specularity = glGetUniformLocation(shaderprogram, "u_Specularity");
-	GLuint cutOff = glGetUniformLocation(shaderprogram, "u_cutOff");
-	GLuint outerCutOff = glGetUniformLocation(shaderprogram, "u_outerCutOff");
-
-	glUniform1f(cutOff, glm::cos(glm::radians(12.5f)));
-	glUniform1f(outerCutOff, glm::cos(glm::radians(17.5f)));
-
-
-	//Send Variables to our shader
-	//glUniform3f(lightPos, cos(time), 0.0f, 1 + sin(time));    //Position of a point in space. For Point lights.
-	glUniform3f(lightPos, cameraPos.x, cameraPos.y, cameraPos.z);
-	glUniform3f(lightDir, cameraFront.x, cameraFront.y, cameraFront.z);                //Direction vector. For Directional Lights.
-
-	glUniform3f(lightColor, 1.f, 1.f, 1.f);                 //RGB values
-	glUniform1f(specularity, 1.f);                          //How much specular reflection we have for our object
-
-}*/
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

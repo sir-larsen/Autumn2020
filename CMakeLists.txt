@@ -58,8 +58,8 @@ add_executable(autumn2020
 	src/Shader.h
 	src/stb_image.h
 	src/mesh.h
-	src/Maze3D.h
-	src/Maze3d.cpp
+	"src/Terrain.h"
+	src/Terrain.cpp
 	src/model.h "src/Ghost3D.h" "src/Ghost3D.cpp")
 
 
