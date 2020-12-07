@@ -140,7 +140,7 @@ int main(void)
 	//Shader			shader("shaders/camera2.glsl");
 	Shader			shader("shaders/mazeVS.glsl", "shaders/mazeFS.glsl");
 	Renderer		renderer;
-	Terrain			terrain(&scenario, &shader, &renderer, 1080, 1080, 1.0f);
+	Terrain			terrain(&scenario, &shader, &renderer, 1081, 1081, 1.0f);
 	camera =        new Camera(glm::vec3(5.0f, 0.5f, 0.0f));
 
 	Model ghost("res/ghost/Ghost.obj");
@@ -156,7 +156,7 @@ int main(void)
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 
-		glClearColor(0.2f, 0.2f, 0.1f, 1.0f);
+		glClearColor(0.5f, 0.2f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 
@@ -167,7 +167,7 @@ int main(void)
 		
 
 		// pass projection matrix to shader (note that in this case it could change every frame)
-		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 2000.0f);
 
 		// camera/view transformation
 		glm::mat4 view = camera->GetViewMatrix();

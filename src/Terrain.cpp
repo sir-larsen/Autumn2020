@@ -38,8 +38,7 @@ Terrain::Terrain(ScenarioLoader* loadedLevel, Shader* shader, Renderer* renderer
 	height = m_LoadedLevel->getVerticalSize();*/
 
 	width = breadth;   //The x-direction of the landscape
-	depth = m_depth;   //The z-direction of the landscape. Setting this to minus values
-					   //so larger (negative) z values are more distant. (positive points toward screen)
+	depth = m_depth;   
 	step = m_step;
 
 	//map2d.resize(height, std::vector<int>(width));
@@ -127,28 +126,31 @@ void Terrain::makePositionsAndIndices()
 
 	for (int vx = 0; vx < vertices_width; vx++) {
 		for (int vz = 0; vz < vertices_depth; vz++) {
-			offset = glm::vec3(vx*step, 0.0f, vz*step);
+			offset = glm::vec3(vx, 0.0f, vz);
 			//float vy = 0.0f; // =getHeight(vx, vz); When height introduced
 			int vyInt = gScale->getHeight(vx, vz);
-			float vy = vyInt / 10.0;
-
-			terrain.location = offset + glm::vec3(0.0f * step, gScale->getHeight(offset.x + (0.0f*step), offset.z + (0.0f * step)), 0.0f * step);
-			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(0.0f * step, 1.0f, 0.0f * step);
+			
+			float vy = gScale->getHeight(offset.x + (0.0f), offset.z + (0.0f));
+			terrain.location = offset + glm::vec3(0.0f, vy, 0.0f);
+			terrain.normals = calcNormals(offset.x+0.0f, offset.z+0.0f, step, vy);
 			terrain.texCoords = glm::vec2(0.0f, 0.0f);
 			tVertices.push_back(terrain);
 
-			terrain.location = offset + glm::vec3(0.0f * step, gScale->getHeight(offset.x + (0.0f * step), offset.z + (1.0f * step)), 1.0f * step);
-			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(0.0f * step, 1.0f, 1.0f * step);
+			vy = gScale->getHeight(offset.x + (0.0f), offset.z + (1.0f));
+			terrain.location = offset + glm::vec3(0.0f, vy, 1.0f);
+			terrain.normals = calcNormals(offset.x+0.0f, offset.z+1.0f, step, vy);
 			terrain.texCoords = glm::vec2(1.0f, 0.0f);
 			tVertices.push_back(terrain);
 
-			terrain.location = offset + glm::vec3(1.0f * step, gScale->getHeight(offset.x + (1.0f * step), offset.z + (1.0f * step)), 1.0f * step);
-			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(1.0f * step, 1.0f, 1.0f * step);
+			vy = gScale->getHeight(offset.x + (1.0f), offset.z + (1.0f));
+			terrain.location = offset + glm::vec3(1.0f, vy, 1.0f);
+			terrain.normals = calcNormals(offset.x+1.0, offset.z+1.0f, step, vy);
 			terrain.texCoords = glm::vec2(1.0f, 1.0f);
 			tVertices.push_back(terrain);
 
-			terrain.location = offset + glm::vec3(1.0f * step, gScale->getHeight(offset.x + (1.0f * step), offset.z + (0.0f * step)), 0.0f * step);
-			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(1.0f * step, 1.0f, 0.0f * step);
+			vy = gScale->getHeight(offset.x + (1.0f), offset.z + (0.0f));
+			terrain.location = offset + glm::vec3(1.0f, vy, 0.0f);
+			terrain.normals = calcNormals(offset.x+1.0f, offset.z+0.0f, step, vy);
 			terrain.texCoords = glm::vec2(0.0f, 1.0f);
 			tVertices.push_back(terrain);
 
@@ -586,9 +588,9 @@ void Terrain::Transform(float dt)
 
 void Terrain::Light(const float dt, Camera* camera)
 {
-	m_Shader->setVec3("dirLight.direction", 0.4f, 0.9f, 0.2f);
+	m_Shader->setVec3("dirLight.direction", 0.3f, 0.7f, 0.4f);
 	m_Shader->setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-	m_Shader->setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+	m_Shader->setVec3("dirLight.diffuse", 0.9f, 1.f, 0.1f);
 	m_Shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
 	m_Shader->setVec3("pointLight.position", glm::vec3(18.f, 1.3f, 14.f)/*camera->Position+glm::vec3(5.f,+0.7f,-25.f)*/);
@@ -599,6 +601,27 @@ void Terrain::Light(const float dt, Camera* camera)
 	m_Shader->setFloat("pointLight.linear", 0.3);
 	m_Shader->setFloat("pointLight.quadratic", 0.0032);
 
+}
+
+glm::vec3 Terrain::calcNormals(float x, float z, float step, float y)
+{
+
+	x = static_cast<int>(x);
+	z = static_cast<int>(z);
+
+	float heightL = gScale->getHeight(x - 1, z);
+	float heightR = gScale->getHeight(x + 1, z);
+	float heightD = gScale->getHeight(x, z - 1);
+	float heightU = gScale->getHeight(x, z + 1);
+	glm::vec3 normal = glm::vec3(heightL - heightR, -0.4f, heightD - heightU);
+	normal = glm::normalize(normal);
+	return normal;
+
+	return glm::normalize(glm::vec3(x, 1, z));
+	//return normal;
+	//glm::vec3 n = glm::normalize(glm::vec3((heightU - heightD), (heightU - heightD) * (heightR - heightL), (heightR - heightL)));
+	//return n;
+	//return norm;
 }
 
 /*glm::vec3 Terrain::findSpawn()

@@ -113,4 +113,5 @@ private:
 	void makeIndices();
 	void makePositionsAndIndices();
 	void generateMaze();
+	glm::vec3 calcNormals(float x, float z, float step, float y);
 };
