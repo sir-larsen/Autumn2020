@@ -71,6 +71,11 @@ Terrain::~Terrain(){
 	free(nVBLayout);
 	free(nIBO);
 
+	free(tVAO);
+	free(tVBO);
+	free(tVBLayout);
+	free(gScale);
+
 }
 
 /**
@@ -109,6 +114,10 @@ Terrain::~Terrain(){
  */
 void Terrain::makePositionsAndIndices()
 {
+	gScale = new Texture(5, "res/HeightMaps/Gjovik_Height MapLow.png");
+	float hoi = gScale->getHeight(10, 12);
+	std::cout << "Elevation hoi: " << hoi << std::endl;
+
 	Vertex terrain;
 	int indexOff = 0;
 	glm::vec3 offset;
@@ -118,8 +127,10 @@ void Terrain::makePositionsAndIndices()
 
 	for (int vx = 0; vx < vertices_width; vx++) {
 		for (int vz = 0; vz < vertices_depth; vz++) {
-			offset = glm::vec3(vx, 0.0f, vz);
-			float vy = 0.0f; // =getHeight(vx, vz); When height introduced
+			offset = glm::vec3(vx*step, 0.0f, vz*step);
+			//float vy = 0.0f; // =getHeight(vx, vz); When height introduced
+			int vyInt = gScale->getHeight(vx, vz);
+			float vy = vyInt / 10.0;
 
 			terrain.location = offset + glm::vec3(0.0f * step, vy, 0.0f * step);
 			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(0.0f * step, 1.0f, 0.0f * step);

@@ -48,6 +48,8 @@ private:
 	IndexBuffer*        tIBO;
 	VertexBufferLayout* tVBLayout;
 
+	Texture*			gScale;
+
 
 	//*********************************
 
@@ -61,6 +63,7 @@ private:
 
 	std::vector <unsigned int> nIndices;
 	std::vector <Vertex>       nVertices;
+
 
 
 	Renderer* m_Renderer;
