@@ -1,11 +1,6 @@
 /**
- * @file Texture.cpp
- * @author Sebastian Lindtvedt (lindtvedt.sebastian@gmail.com)
+ * @file Texture.cpp 
  * @brief The source file for the Texture class
- * @version 0.1
- * @date 2020-10-12
- * 
- * @copyright Copyright (c) 2020
  * 
  */
 #define STB_IMAGE_IMPLEMENTATION
@@ -16,7 +11,7 @@
 #include <iostream>
 
 /**
- * @brief Construct a new Texture:: Texture object
+ * @brief Construct a new Texture:: Texture object for greyscale height map
  * 
  * @param filepath - The filepath to the file containing the texture
  */
@@ -34,13 +29,13 @@ Texture::Texture(int hoi, const std::string& filepath)
 
 	stbi_set_flip_vertically_on_load(1);
 	m_LocalBuffer = stbi_load(filepath.c_str(), &m_Width, &m_Height, &m_BPP, 4);
-
-	/*for (int i = 0; i < 500; i++) {
-		float elevation = static_cast<float>(*(m_LocalBuffer + (i*4)));
-		std::cout << "elevation" << i << ": " << elevation << std::endl;
-	}*/
 }
 
+/**
+ * @brief Construct a new Texture:: Texture object
+ *
+ * @param filepath - The filepath to the file containing the texture
+ */
 Texture::Texture(const std::string& filepath)
 	: m_RendererID(0),
 	m_FilePath(filepath),
@@ -101,9 +96,9 @@ void Texture::Unbind() const
 {
 	glBindTexture(GL_TEXTURE_2D,0);
 }
-
-int Texture::getHeight(int width, int depth)
+float Texture::getHeight(int width, int depth)
 {
-	float elevation = static_cast<int>(*(m_LocalBuffer + (width * m_Width + depth) * 4));
+	float elevation = static_cast<float>(*(m_LocalBuffer + ((width * m_Width + depth)*4)));
+	//std::cout << "elevation: " << elevation << std::endl;
 	return elevation;
 }

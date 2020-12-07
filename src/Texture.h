@@ -30,7 +30,7 @@ public:
 	void Bind(unsigned int slot = 0) const;
 	void Unbind() const;
 
-	int getHeight(int width, int depth);
+	float getHeight(int width, int depth);
 
 	int getWidth() const { return m_Width; }
 	int getHeight() const { return m_Height; }

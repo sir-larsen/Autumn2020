@@ -114,7 +114,7 @@ Terrain::~Terrain(){
  */
 void Terrain::makePositionsAndIndices()
 {
-	gScale = new Texture(5, "res/HeightMaps/Gjovik_Height MapLow.png");
+	gScale = new Texture(5, "res/HeightMaps/Mosjoen_Height Map.png");
 	float hoi = gScale->getHeight(10, 12);
 	std::cout << "Elevation hoi: " << hoi << std::endl;
 
@@ -132,22 +132,22 @@ void Terrain::makePositionsAndIndices()
 			int vyInt = gScale->getHeight(vx, vz);
 			float vy = vyInt / 10.0;
 
-			terrain.location = offset + glm::vec3(0.0f * step, vy, 0.0f * step);
+			terrain.location = offset + glm::vec3(0.0f * step, gScale->getHeight(offset.x + (0.0f*step), offset.z + (0.0f * step)), 0.0f * step);
 			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(0.0f * step, 1.0f, 0.0f * step);
 			terrain.texCoords = glm::vec2(0.0f, 0.0f);
 			tVertices.push_back(terrain);
 
-			terrain.location = offset + glm::vec3(0.0f * step, vy, 1.0f * step);
+			terrain.location = offset + glm::vec3(0.0f * step, gScale->getHeight(offset.x + (0.0f * step), offset.z + (1.0f * step)), 1.0f * step);
 			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(0.0f * step, 1.0f, 1.0f * step);
 			terrain.texCoords = glm::vec2(1.0f, 0.0f);
 			tVertices.push_back(terrain);
 
-			terrain.location = offset + glm::vec3(1.0f * step, vy, 1.0f * step);
+			terrain.location = offset + glm::vec3(1.0f * step, gScale->getHeight(offset.x + (1.0f * step), offset.z + (1.0f * step)), 1.0f * step);
 			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(1.0f * step, 1.0f, 1.0f * step);
 			terrain.texCoords = glm::vec2(1.0f, 1.0f);
 			tVertices.push_back(terrain);
 
-			terrain.location = offset + glm::vec3(1.0f * step, vy, 0.0f * step);
+			terrain.location = offset + glm::vec3(1.0f * step, gScale->getHeight(offset.x + (1.0f * step), offset.z + (0.0f * step)), 0.0f * step);
 			terrain.normals = /*calculateNormals();*/ offset + glm::vec3(1.0f * step, 1.0f, 0.0f * step);
 			terrain.texCoords = glm::vec2(0.0f, 1.0f);
 			tVertices.push_back(terrain);

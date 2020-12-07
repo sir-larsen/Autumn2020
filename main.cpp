@@ -140,7 +140,7 @@ int main(void)
 	//Shader			shader("shaders/camera2.glsl");
 	Shader			shader("shaders/mazeVS.glsl", "shaders/mazeFS.glsl");
 	Renderer		renderer;
-	Terrain			terrain(&scenario, &shader, &renderer, 1081, 1081, 0.3f);
+	Terrain			terrain(&scenario, &shader, &renderer, 1080, 1080, 1.0f);
 	camera =        new Camera(glm::vec3(5.0f, 0.5f, 0.0f));
 
 	Model ghost("res/ghost/Ghost.obj");
