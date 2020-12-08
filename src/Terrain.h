@@ -48,8 +48,9 @@ private:
 	VertexBuffer*       tVBO;
 	IndexBuffer*        tIBO;
 	VertexBufferLayout* tVBLayout;
-
+public:
 	Texture*			gScale;
+private:
 	//*******************************
 	//Landscape and everything needed
 	std::vector <Vertex>	   dVertices;

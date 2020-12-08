@@ -6,9 +6,9 @@
 #include "src/Renderer.h"
 #include "src/model.h"
 #include "src/Trees.h"
-
 #include "src/Terrain.h"
 #include "src/stb_image.h"
+#include "src/Movobj.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -19,23 +19,6 @@
 #include <set>
 #include <iostream>
 #include <iomanip>
-
-/*struct Vertex
-{
-	glm::vec3 location;
-	glm::vec3 normals;
-	glm::vec2 texCoords;
-};
-std::vector<Vertex> vertices;
-*/
-/*std::vector <GLuint> gCubes;
-std::vector <unsigned int> mapIndices;
-std::vector <glm::vec3> mapPositions;
-std::vector <glm::vec3> mapNormals;*/
-
-/*glm::vec3 cameraPos = glm::vec3(0.0f, 0.35f, 3.0f); //Position of camera
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f); //Vector pointing to camera positive y-axis*/
 
 void GLAPIENTRY MessageCallback(GLenum source,
 	GLenum type,
@@ -69,8 +52,6 @@ bool firstMouse = true;
 bool constrainMovement = true;
 bool gameover = false;
 /******************************/
-
-
 
 //Timing
 float deltaTime = 0.0f;
@@ -146,15 +127,22 @@ int main(void)
 
 	std::cout << "Treecount: " << terrain.getTreeCount() << std::endl;
 
-	Model ghost("res/ghost/Ghost.obj");
+	Model  ghost("res/ghost/Ghost.obj");
 	Shader ghostShader/*= new Shader*/("shaders/ghostVS.glsl", "shaders/ghostFS.glsl");
 
 	Shader treeShader("shaders/treeVS.glsl", "shaders/treeFS.glsl");
-	Model tree("res/objects/PineTree2/10447_Pine_Tree_v1_L3b.obj");
-	Trees trees(&tree, &terrain);
+	Model  tree("res/objects/PineTree2/10447_Pine_Tree_v1_L3b.obj");
+	Trees  trees(&tree, &terrain);
 	
+	Model						 deer("res/objects/Deer1/12961_White-Tailed_Deer_v1_l2.obj");
+	std::vector<Shader*>         deerShaders;
+	std::vector<Movobj*>			 deers;
 
-
+	for (int i = 0; i < 3; i++) {
+		deerShaders.push_back(new Shader("shaders/gObjectsVS.glsl", "shaders/gObjectsFS.glsl"));
+		deers.push_back(new Movobj(&terrain, &deer, i));
+		deers[i]->setSpawn(10.f + i * 4, 10.f + i * 4);
+	}
 
 
 
@@ -171,13 +159,6 @@ int main(void)
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
-
-		/*if (cameraPos.y > 0.353f)
-			cameraPos.y = 0.35f;
-		if (cameraPos.y < 0.347f)
-			cameraPos.y = 0.35f;*/
-		
-
 		// pass projection matrix to shader (note that in this case it could change every frame)
 		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 2000.0f);
 
@@ -189,6 +170,10 @@ int main(void)
 		terrain.draw(projection, view, deltaTime); //Draw call
 
 		trees.Draw(&treeShader, projection, view);
+
+		for (int i = 0; i < 3; i++) {
+			deers[i]->draw(deerShaders[i], projection, view, deltaTime);
+		}
 
 		/*Drawing of ghost object*/
 		ghostShader.use();
@@ -202,16 +187,6 @@ int main(void)
 		Shader* gsPoint = &ghostShader;
 		//ghost.Draw(&(Shader)ghostShader);
 		ghost.Draw(*gsPoint);
-
-		ghostShader.setMat4("u_ProjectionMat", projection);
-		ghostShader.setMat4("u_ViewMat", view);
-		translation = glm::translate(glm::mat4(1), glm::vec3(2.0f, 0.5f, 2.0f));
-		scale = glm::scale(glm::mat4(1), glm::vec3(0.01f));
-		transformation = translation * /*rotation */ scale;
-		ghostShader.setMat4("u_TransformationMat", transformation);
-		Shader* treePoint = &ghostShader;
-		tree.Draw(*treePoint);
-
 		/*************************/
 		
 		
@@ -229,6 +204,15 @@ int main(void)
 
 
 	}
+
+	for (auto obj : deerShaders) //Deleting pointers
+		delete obj;
+
+	//for (auto obj : deers)
+	//	delete obj;
+	
+	delete camera;
+	
 
 	glfwTerminate();
 	return 0;
