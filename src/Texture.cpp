@@ -55,8 +55,8 @@ Texture::Texture(const std::string& filepath)
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT/*GL_CLAMP_TO_EDGE*/);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT/*GL_CLAMP_TO_EDGE*/);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, /*GL_REPEAT*/GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, /*GL_REPEAT*/GL_CLAMP_TO_EDGE);
 
 	//glBindTexture(GL_TEXTURE_2D, m_RendererID);
 	Bind(0);
@@ -115,6 +115,6 @@ float Texture::getHeight(int width, int depth)
 		elevation -= 255 / 2.0f;
 		elevation /= 255 / 2.0f; //To get height between
 		elevation *= 25;
-		return elevation;
+		return elevation-20;
 	}
 }

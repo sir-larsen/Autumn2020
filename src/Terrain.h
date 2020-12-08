@@ -49,46 +49,46 @@ private:
 	VertexBufferLayout* tVBLayout;
 
 	Texture*			gScale;
+	//*******************************
+	//Landscape and everything needed
+	std::vector <Vertex>	   dVertices;
+	std::vector <unsigned int> dIndices;
 
+	VertexArray* dVAO;
+	VertexBuffer* dVBO;
+	IndexBuffer* dIBO;
+	VertexBufferLayout* dVBLayout;
 
-	//*********************************
+	//*******************************
+	//Landscape and everything needed
+	std::vector <Vertex>	   gVertices;
+	std::vector <unsigned int> gIndices;
 
-	std::vector <unsigned int> mapIndices;
-	std::vector <glm::vec3> mazePositions;
-	std::vector <Vertex> maze3DVertices;
+	VertexArray* gVAO;
+	VertexBuffer* gVBO;
+	IndexBuffer* gIBO;
+	VertexBufferLayout* gVBLayout;
 
-	std::vector <unsigned int> floorIndices;
-	std::vector <glm::vec3>    floorPositions;
-	std::vector <Vertex>       floorVertices;
+	//*******************************
+	//Landscape and everything needed
+	std::vector <Vertex>	   sVertices;
+	std::vector <unsigned int> sIndices;
 
-	std::vector <unsigned int> nIndices;
-	std::vector <Vertex>       nVertices;
+	VertexArray* sVAO;
+	VertexBuffer* sVBO;
+	IndexBuffer* sIBO;
+	VertexBufferLayout* sVBLayout;
 
+	//*******************************
+	Texture* dirt;
+	//Texture* sDirt;
+
+	Texture* grass;
+	Texture* snow;
 
 
 	Renderer* m_Renderer;
 	//Shader* m_Shader;
-
-	VertexArray*		floorVAO;
-	VertexBuffer*		floorVBO;
-	IndexBuffer*		floorIBO;
-	VertexBufferLayout* floorVBLayout;
-	//Texture*			floorPic1;
-
-	//Nyggz kødd
-	VertexArray* nVAO;
-	VertexBuffer* nVBO;
-	IndexBuffer* nIBO;
-	VertexBufferLayout* nVBLayout;
-	//*************
-
-	VertexArray*		mazeVAO;
-	VertexBuffer*		mazeVBO;
-	VertexBufferLayout* mazeVBLayout;
-	IndexBuffer*		mazeIBO;
-	Texture*			Diffuse;
-	Texture*			Specular;
-	Texture* nyggz;
 public:
 	//void generateFloor();
 
@@ -113,5 +113,6 @@ private:
 	void makeIndices();
 	void makePositionsAndIndices();
 	void generateMaze();
-	glm::vec3 calcNormals(float x, float z, float step, float y);
+	glm::vec3 calcNormals(float x, float z);
+	void setVertex(Vertex& v, glm::vec3 p, const glm::vec3& offset);
 };

@@ -56,24 +56,11 @@ Terrain::~Terrain(){
 	free(mazeVBO);
 	free(mazeVBLayout);
 	free(mazeIBO);*/
-	free(Diffuse);
-	free(Specular);
-	free(nyggz);
 
-	/*free(floorVAO);
-	free(floorVBO);
-	free(floorVBLayout);
-	free(floorIBO);*/
-
-	free(nVAO);
-	free(nVBO);
-	free(nVBLayout);
-	free(nIBO);
-
-	free(tVAO);
+	/*free(tVAO);
 	free(tVBO);
 	free(tVBLayout);
-	free(gScale);
+	free(gScale);*/
 
 }
 
@@ -119,6 +106,10 @@ void Terrain::makePositionsAndIndices()
 
 	Vertex terrain;
 	int indexOff = 0;
+
+	int gOffset, sOffset, dOffset;
+	gOffset = sOffset = dOffset = 0;
+
 	glm::vec3 offset;
 
 	int vertices_width = width;
@@ -130,27 +121,110 @@ void Terrain::makePositionsAndIndices()
 			//float vy = 0.0f; // =getHeight(vx, vz); When height introduced
 			int vyInt = gScale->getHeight(vx, vz);
 			
+
 			float vy = gScale->getHeight(offset.x + (0.0f), offset.z + (0.0f));
-			terrain.location = offset + glm::vec3(0.0f, vy, 0.0f);
-			terrain.normals = calcNormals(offset.x+0.0f, offset.z+0.0f, step, vy);
-			terrain.texCoords = glm::vec2(0.0f, 0.0f);
-			tVertices.push_back(terrain);
+
+			if (vy < -37) {
+				setVertex(terrain, glm::vec3(0.0f, vy, 0.0f), offset);
+				dVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (0.0f), offset.z + (1.0f));
+				setVertex(terrain, glm::vec3(0.0f, vy, 1.0f), offset);
+				dVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (1.0f), offset.z + (1.0f));
+				setVertex(terrain, glm::vec3(1.0f, vy, 1.0f), offset);
+				dVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (1.0f), offset.z + (0.0f));
+				setVertex(terrain, glm::vec3(1.0f, vy, 0.0f), offset);
+				dVertices.push_back(terrain);
+
+				dIndices.push_back(dOffset + 0);
+				dIndices.push_back(dOffset + 1);
+				dIndices.push_back(dOffset + 2);
+				dIndices.push_back(dOffset + 2);
+				dIndices.push_back(dOffset + 3);
+				dIndices.push_back(dOffset + 0);
+				dOffset += 4;
+			}
+			else if (vy > -12) {
+				setVertex(terrain, glm::vec3(0.0f, vy, 0.0f), offset);
+				sVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (0.0f), offset.z + (1.0f));
+				setVertex(terrain, glm::vec3(0.0f, vy, 1.0f), offset);
+				sVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (1.0f), offset.z + (1.0f));
+				setVertex(terrain, glm::vec3(1.0f, vy, 1.0f), offset);
+				sVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (1.0f), offset.z + (0.0f));
+				setVertex(terrain, glm::vec3(1.0f, vy, 0.0f), offset);
+				sVertices.push_back(terrain);
+
+				sIndices.push_back(sOffset + 0);
+				sIndices.push_back(sOffset + 1);
+				sIndices.push_back(sOffset + 2);
+				sIndices.push_back(sOffset + 2);
+				sIndices.push_back(sOffset + 3);
+				sIndices.push_back(sOffset + 0);
+				sOffset += 4;
+			}
+			else {
+				setVertex(terrain, glm::vec3(0.0f, vy, 0.0f), offset);
+				gVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (0.0f), offset.z + (1.0f));
+				setVertex(terrain, glm::vec3(0.0f, vy, 1.0f), offset);
+				gVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (1.0f), offset.z + (1.0f));
+				setVertex(terrain, glm::vec3(1.0f, vy, 1.0f), offset);
+				gVertices.push_back(terrain);
+
+				vy = gScale->getHeight(offset.x + (1.0f), offset.z + (0.0f));
+				setVertex(terrain, glm::vec3(1.0f, vy, 0.0f), offset);
+				gVertices.push_back(terrain);
+
+				gIndices.push_back(gOffset + 0);
+				gIndices.push_back(gOffset + 1);
+				gIndices.push_back(gOffset + 2);
+				gIndices.push_back(gOffset + 2);
+				gIndices.push_back(gOffset + 3);
+				gIndices.push_back(gOffset + 0);
+				gOffset += 4;
+			}
+
+			/*terrain.location = offset + glm::vec3(0.0f, vy, 0.0f);
+			terrain.normals = calcNormals(offset.x+0.0f, offset.z+0.0f);
+			terrain.texCoords = glm::vec2(0.0f, 0.0f);*/
+			/*if (terrain.location.y > 14) {
+				sVertices.push_back(terrain);
+				sIndices.push_back(0);
+			}
+			else if (terrain.location.y < -11)
+				dVertices.push_back(terrain);
+			else
+				gVertices.push_back(terrain);*/
+			/*tVertices.push_back(terrain);
 
 			vy = gScale->getHeight(offset.x + (0.0f), offset.z + (1.0f));
 			terrain.location = offset + glm::vec3(0.0f, vy, 1.0f);
-			terrain.normals = calcNormals(offset.x+0.0f, offset.z+1.0f, step, vy);
+			terrain.normals = calcNormals(offset.x+0.0f, offset.z+1.0f);
 			terrain.texCoords = glm::vec2(1.0f, 0.0f);
 			tVertices.push_back(terrain);
 
 			vy = gScale->getHeight(offset.x + (1.0f), offset.z + (1.0f));
 			terrain.location = offset + glm::vec3(1.0f, vy, 1.0f);
-			terrain.normals = calcNormals(offset.x+1.0, offset.z+1.0f, step, vy);
+			terrain.normals = calcNormals(offset.x+1.0, offset.z+1.0f);
 			terrain.texCoords = glm::vec2(1.0f, 1.0f);
 			tVertices.push_back(terrain);
 
 			vy = gScale->getHeight(offset.x + (1.0f), offset.z + (0.0f));
 			terrain.location = offset + glm::vec3(1.0f, vy, 0.0f);
-			terrain.normals = calcNormals(offset.x+1.0f, offset.z+0.0f, step, vy);
+			terrain.normals = calcNormals(offset.x+1.0f, offset.z+0.0f);
 			terrain.texCoords = glm::vec2(0.0f, 1.0f);
 			tVertices.push_back(terrain);
 
@@ -160,45 +234,28 @@ void Terrain::makePositionsAndIndices()
 			tIndices.push_back(indexOff + 2);
 			tIndices.push_back(indexOff + 3);
 			tIndices.push_back(indexOff + 0);
-			indexOff += 4;
+			indexOff += 4;*/
+
+			/*for (int i = 0; i < tVertices.size(); i++) {
+				if (tVertices[i].location.y > 14) {
+					sVertices.push_back(tVertices[i]);
+					sIndices.push_back(tIndices[i]);
+				}
+				else if (tVertices[i].location.y < -11) {
+					dVertices.push_back(tVertices[i]);
+					dIndices.push_back(tIndices[i]);
+				}
+				else {
+					gVertices.push_back(tVertices[i]);
+					gIndices.push_back(tIndices[i]);
+				}
+					
+			}*/
+
 		}
 	}
 
 
-
-
-
-
-	Vertex nyggz;
-	nyggz.location = glm::vec3(10.f, 4.f, 10.f);
-	nyggz.normals = glm::vec3(9.f, 4.f, 10.f);
-	nyggz.texCoords = glm::vec2(0.0f, 0.0f);
-	nVertices.push_back(nyggz);
-
-	nyggz.location = glm::vec3(10.f, 4.f, 30.f);
-	nyggz.normals = glm::vec3(9.f, 4.f, 30.f);
-	nyggz.texCoords = glm::vec2(1.0f, 0.0f);
-	nVertices.push_back(nyggz);
-
-	nyggz.location = glm::vec3(10.f, 30.f, 30.f);
-	nyggz.normals = glm::vec3(9.f, 30.f, 30.f);
-	nyggz.texCoords = glm::vec2(1.0f, 1.0f);
-	nVertices.push_back(nyggz);
-
-	nyggz.location = glm::vec3(10.f, 30.f, 10.f);
-	nyggz.normals = glm::vec3(9.f, 30.f, 30.f);
-	nyggz.texCoords = glm::vec2(0.0f, 1.0f);
-	nVertices.push_back(nyggz);
-
-	nIndices.push_back(0);
-	nIndices.push_back(1);
-	nIndices.push_back(2);
-	nIndices.push_back(2);
-	nIndices.push_back(3);
-	nIndices.push_back(0);
-
-	
-	
 
 	/*//Adding floor
 	Vertex floor;
@@ -490,8 +547,8 @@ void Terrain::generateMaze()
 	floorVAO->AddBuffer(*floorVBO, *floorVBLayout);
 	floorIBO = new IndexBuffer(&floorIndices[0], floorIndices.size());*/
 
-	//Terrain
-	tVAO = new VertexArray;
+	//Terrain - old not in use
+	/*tVAO = new VertexArray;
 	tVAO->Bind();
 	tVBO = new VertexBuffer(&tVertices[0], tVertices.size() * sizeof(Vertex));
 
@@ -501,32 +558,63 @@ void Terrain::generateMaze()
 	tVBLayout->Push<float>(2);
 
 	tVAO->AddBuffer(*tVBO, *tVBLayout);
-	tIBO = new IndexBuffer(&tIndices[0], tIndices.size());
+	tIBO = new IndexBuffer(&tIndices[0], tIndices.size());*/
+	//*******************************
+
+	//Dirt VAO
+	dVAO = new VertexArray;
+	dVAO->Bind();
+	dVBO = new VertexBuffer(&dVertices[0], dVertices.size() * sizeof(Vertex));
+
+	dVBLayout = new VertexBufferLayout;
+	dVBLayout->Push<float>(3);
+	dVBLayout->Push<float>(3);
+	dVBLayout->Push<float>(2);
+
+	dVAO->AddBuffer(*dVBO, *dVBLayout);
+	dIBO = new IndexBuffer(&dIndices[0], dIndices.size());
 	//**************
 
+	//Snow VAO
+	sVAO = new VertexArray;
+	sVAO->Bind();
+	sVBO = new VertexBuffer(&sVertices[0], sVertices.size() * sizeof(Vertex));
 
-	//Nyggz
-	nVAO = new VertexArray;
-	nVAO->Bind();
-	nVBO = new VertexBuffer(&nVertices[0], nVertices.size() * sizeof(Vertex));
-	nVBLayout = new VertexBufferLayout;
-	nVBLayout->Push<float>(3);
-	nVBLayout->Push<float>(3);
-	nVBLayout->Push<float>(2);
+	sVBLayout = new VertexBufferLayout;
+	sVBLayout->Push<float>(3);
+	sVBLayout->Push<float>(3);
+	sVBLayout->Push<float>(2);
 
-	nVAO->AddBuffer(*nVBO, *nVBLayout);
-	nIBO = new IndexBuffer(&nIndices[0], nIndices.size());
-	//*****************
+	sVAO->AddBuffer(*sVBO, *sVBLayout);
+	sIBO = new IndexBuffer(&sIndices[0], sIndices.size());
+	//*******************
+
+	//Grass VAO
+	gVAO = new VertexArray;
+	gVAO->Bind();
+	gVBO = new VertexBuffer(&gVertices[0], gVertices.size() * sizeof(Vertex));
+
+	gVBLayout = new VertexBufferLayout;
+	gVBLayout->Push<float>(3);
+	gVBLayout->Push<float>(3);
+	gVBLayout->Push<float>(2);
+
+	gVAO->AddBuffer(*gVBO, *gVBLayout);
+	gIBO = new IndexBuffer(&gIndices[0], gIndices.size());
+	//*******************
 
 	m_Shader->use();
 	
 	//m_Shader->setUniform4f("u_Color", 0.f, 0.305f, 0.7f, 1.f);
-	Diffuse = new Texture("res/Mossy_Stone.jpg");
+	/*Diffuse = new Texture("res/Mossy_Stone.jpg");
 	Diffuse->Bind(0);
 	Specular = new Texture("res/Mossy_Stone.jpg");
 	Specular->Bind(1);
-	nyggz = new Texture("res/Mossy_Stone.jpg");
-	//Nyggz
+	nyggz = new Texture("res/Mossy_Stone.jpg");*/
+	
+	dirt  = new Texture("res/dirt.jpg");
+	grass = new Texture("res/grass.jpg");
+	snow  = new Texture("res/snow.jpg");
 
 	//MAZEPIC2 GEN OG BIND(1) SKULLE VÆRT HER
 	m_Shader->setInt("material.diffuse", 0);
@@ -554,14 +642,20 @@ void Terrain::draw(glm::mat4 projection, glm::mat4 view, const float dt)
 	m_Shader->setMat4("u_ProjectionMat", projection);
 	m_Shader->setMat4("u_ViewMat", view);
 	Transform(dt);
-	Diffuse->Bind(0);
-	Specular->Bind(1);
+	/*Diffuse->Bind(0);
+	Specular->Bind(1);*/
 	//m_Renderer->Draw(mazeVAO, mazeIBO, m_Shader);
 	//m_Renderer->Draw(floorVAO, floorIBO, m_Shader);
-	nyggz->Bind(0);
-	nyggz->Bind(1);
+	//nyggz->Bind(0);
+	//nyggz->Bind(1);
 	//m_Renderer->Draw(nVAO, nIBO, m_Shader);
-	m_Renderer->Draw(tVAO, tIBO, m_Shader);
+	//m_Renderer->Draw(tVAO, tIBO, m_Shader);
+	dirt->Bind(0);
+	m_Renderer->Draw(dVAO, dIBO, m_Shader);
+	grass->Bind(0);
+	m_Renderer->Draw(gVAO, gIBO, m_Shader);
+	snow->Bind(0);
+	m_Renderer->Draw(sVAO, sIBO, m_Shader);
 
 
 	/*m_Shader->camera(projection,view);
@@ -588,9 +682,9 @@ void Terrain::Transform(float dt)
 
 void Terrain::Light(const float dt, Camera* camera)
 {
-	m_Shader->setVec3("dirLight.direction", 0.3f, 0.7f, 0.4f);
-	m_Shader->setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-	m_Shader->setVec3("dirLight.diffuse", 0.9f, 1.f, 0.1f);
+	m_Shader->setVec3("dirLight.direction", 0.0f, 1.0f, 0.0f);
+	m_Shader->setVec3("dirLight.ambient", 0.3f, 0.3f, 0.3f);
+	m_Shader->setVec3("dirLight.diffuse", 0.7f, 0.7f, 0.7f);
 	m_Shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 
 	m_Shader->setVec3("pointLight.position", glm::vec3(18.f, 1.3f, 14.f)/*camera->Position+glm::vec3(5.f,+0.7f,-25.f)*/);
@@ -603,7 +697,7 @@ void Terrain::Light(const float dt, Camera* camera)
 
 }
 
-glm::vec3 Terrain::calcNormals(float x, float z, float step, float y)
+glm::vec3 Terrain::calcNormals(float x, float z)
 {
 
 	x = static_cast<int>(x);
@@ -613,15 +707,33 @@ glm::vec3 Terrain::calcNormals(float x, float z, float step, float y)
 	float heightR = gScale->getHeight(x + 1, z);
 	float heightD = gScale->getHeight(x, z - 1);
 	float heightU = gScale->getHeight(x, z + 1);
-	glm::vec3 normal = glm::vec3(heightL - heightR, -0.4f, heightD - heightU);
+	glm::vec3 normal = glm::vec3(heightL - heightR, -2.0f, heightD - heightU);
 	normal = glm::normalize(normal);
-	return normal;
+	//return normal;
 
 	return glm::normalize(glm::vec3(x, 1, z));
 	//return normal;
 	//glm::vec3 n = glm::normalize(glm::vec3((heightU - heightD), (heightU - heightD) * (heightR - heightL), (heightR - heightL)));
 	//return n;
 	//return norm;
+}
+
+void Terrain::setVertex(Vertex& v, glm::vec3 p, const glm::vec3& offset)
+{
+	v.location = offset + p;
+	v.normals  = calcNormals(offset.x + p.x, offset.z + p.z);
+
+	if (p.x < 0.8f && p.z < 0.8f) {
+		v.texCoords = glm::vec2(0.0f, 0.0f);
+	}
+	else if (p.x < 0.8f && p.z > 0.8f) {
+		v.texCoords = glm::vec2(1.0f, 0.0f);
+	}
+	else if (p.x > 0.8f && p.z > 0.8f) {
+		v.texCoords = glm::vec2(1.0f, 1.0f);
+	}
+	else
+		v.texCoords = glm::vec2(0.0f, 1.0f);
 }
 
 /*glm::vec3 Terrain::findSpawn()
