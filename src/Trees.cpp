@@ -17,11 +17,7 @@ void Trees::generateModelMatrices(Terrain* terrain)
 			
 			if (terrain->gVertices[i].location.x < 1063 && terrain->gVertices[i].location.x > 17 &&
 				terrain->gVertices[i].location.z < 1063 && terrain->gVertices[i].location.z > 17) {
-
-				/*if (terrain->gVertices[i].location.x < 1045 && terrain->gVertices[i].location.z < 1045)
-					translation = glm::translate(glm::mat4(1), terrain->gVertices[i].location + glm::vec3(12.f, -0.4f, 12.f));
-				else
-					translation = glm::translate(glm::mat4(1), terrain->gVertices[i].location - glm::vec3(12.f, 0.4f, 12.f));*/
+				
 				glm::mat4 translation = glm::translate(glm::mat4(1), terrain->gVertices[i].location);
 				glm::mat4 rotation = glm::rotate(glm::mat4(1), glm::radians(1 * -90.f), glm::vec3(1.f, 0.f, 0.f));
 				glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.027f, 0.019f, 0.027f));
