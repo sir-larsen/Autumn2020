@@ -36,7 +36,7 @@ Texture::Texture(int hoi, const std::string& filepath)
  *
  * @param filepath - The filepath to the file containing the texture
  */
-Texture::Texture(const std::string& filepath)
+Texture::Texture(const std::string& filepath, int hoi)
 	: m_RendererID(0),
 	m_FilePath(filepath),
 	m_LocalBuffer(nullptr),
@@ -55,9 +55,15 @@ Texture::Texture(const std::string& filepath)
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, /*GL_REPEAT*/GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, /*GL_REPEAT*/GL_CLAMP_TO_EDGE);
 
+	if (hoi == 0) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, /*GL_REPEAT*/GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, /*GL_REPEAT*/GL_CLAMP_TO_EDGE);
+	}
+	else {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
 	//glBindTexture(GL_TEXTURE_2D, m_RendererID);
 	Bind(0);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer);

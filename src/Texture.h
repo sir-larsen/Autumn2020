@@ -23,7 +23,7 @@ private:
 	unsigned char* m_LocalBuffer;
 	int m_Width, m_Height, m_BPP;
 public:
-	Texture(const std::string& filepath);
+	Texture(const std::string& filepath, int hoi);
 	Texture(int hoi, const std::string& filepath);
 	~Texture();
 

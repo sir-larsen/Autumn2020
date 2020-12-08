@@ -51,6 +51,18 @@ private:
 public:
 	Texture*			gScale;
 private:
+	//Water
+	std::vector <Vertex>	   wVertices;
+	std::vector <unsigned int> wIndices;
+
+	VertexArray* wVAO;
+	VertexBuffer* wVBO;
+	IndexBuffer* wIBO;
+	VertexBufferLayout* wVBLayout;
+	Texture* water;
+	Texture* waterSpec;
+	//*****
+
 	//*******************************
 	//Landscape and everything needed
 	std::vector <Vertex>	   dVertices;

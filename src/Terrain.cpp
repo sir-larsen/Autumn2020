@@ -280,6 +280,34 @@ void Terrain::makePositionsAndIndices()
 
 		}
 	}
+	//Water********************
+	terrain.location = glm::vec3(2.0f, -41.2f, 2.0f);
+	terrain.normals = glm::normalize(glm::vec3(0.f, 1.f, 0.f));
+	terrain.texCoords = glm::vec2(0.0f, 0.0f);
+	wVertices.push_back(terrain);
+
+	terrain.location = glm::vec3(2.0f, -41.2f, 1079.f);
+	terrain.normals = glm::normalize(glm::vec3(0.f, 1.f, 0.f));
+	terrain.texCoords = glm::vec2(25.0f, 0.0f);
+	wVertices.push_back(terrain);
+
+	terrain.location = glm::vec3(1079.0f, -41.2f, 1079.0f);
+	terrain.normals = glm::normalize(glm::vec3(0.f, 1.f, 0.f));
+	terrain.texCoords = glm::vec2(25.0f, 25.0f);
+	wVertices.push_back(terrain);
+
+	terrain.location = glm::vec3(1079.0f, -41.2f, 2.0f);
+	terrain.normals = glm::normalize(glm::vec3(0.f, 1.f, 0.f));
+	terrain.texCoords = glm::vec2(0.0f, 25.0f);
+	wVertices.push_back(terrain);
+
+	wIndices.push_back(0);
+	wIndices.push_back(1);
+	wIndices.push_back(2);
+	wIndices.push_back(2);
+	wIndices.push_back(3);
+	wIndices.push_back(0);
+	//*************************
 
 
 
@@ -629,6 +657,20 @@ void Terrain::generateMaze()
 	gIBO = new IndexBuffer(&gIndices[0], gIndices.size());
 	//*******************
 
+	//Water VAO*************************
+	wVAO = new VertexArray;
+	wVAO->Bind();
+	wVBO = new VertexBuffer(&wVertices[0], wVertices.size() * sizeof(Vertex));
+
+	wVBLayout = new VertexBufferLayout;
+	wVBLayout->Push<float>(3);
+	wVBLayout->Push<float>(3);
+	wVBLayout->Push<float>(2);
+
+	wVAO->AddBuffer(*wVBO, *wVBLayout);
+	wIBO = new IndexBuffer(&wIndices[0], wIndices.size());
+	//**********************************
+
 	m_Shader->use();
 	
 	//m_Shader->setUniform4f("u_Color", 0.f, 0.305f, 0.7f, 1.f);
@@ -638,15 +680,18 @@ void Terrain::generateMaze()
 	Specular->Bind(1);
 	nyggz = new Texture("res/Mossy_Stone.jpg");*/
 	
-	dirt  = new Texture("res/dirt.jpg");
+	dirt  = new Texture("res/dirt.jpg", 0);
 
-	grass = new Texture("res/grass.jpg");
-	grassSpec = new Texture("res/grass.jpg");
+	grass = new Texture("res/grass.jpg", 0);
+	grassSpec = new Texture("res/grass.jpg", 0);
 
-	snow  = new Texture("res/snow.jpg");
-	snowSpec = new Texture("res/snow.jpg");
+	snow  = new Texture("res/snow.jpg", 0);
+	snowSpec = new Texture("res/snow.jpg", 0);
 
-	noSpec = new Texture("res/spec.jpg");
+	noSpec = new Texture("res/spec.jpg", 0);
+
+	water = new Texture("res/water.jpg", 1);
+	waterSpec = new Texture("res/water.jpg", 1);
 
 	//MAZEPIC2 GEN OG BIND(1) SKULLE VÆRT HER
 	m_Shader->setInt("material.diffuse", 0);
@@ -691,7 +736,14 @@ void Terrain::draw(glm::mat4 projection, glm::mat4 view, const float dt)
 	snow->Bind(0);
 	snowSpec->Bind(1);
 	m_Renderer->Draw(sVAO, sIBO, m_Shader);
+	
+	water->Bind(0);
+	water->Bind(1);
+	m_Renderer->Draw(wVAO, sIBO, m_Shader);
 
+	//snow->Unbind();
+	//snowSpec->Unbind();
+	//m_Renderer->Draw(wVAO, sIBO, m_Shader);
 
 	/*m_Shader->camera(projection,view);
 	m_Shader->Transform(dt);
