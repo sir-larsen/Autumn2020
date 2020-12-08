@@ -84,7 +84,13 @@ private:
 	//Texture* sDirt;
 
 	Texture* grass;
+	Texture* grassSpec;
+
 	Texture* snow;
+	Texture* snowSpec;
+	
+	Texture* noSpec;
+
 
 
 	Renderer* m_Renderer;

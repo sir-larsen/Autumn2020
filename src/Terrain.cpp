@@ -148,7 +148,7 @@ void Terrain::makePositionsAndIndices()
 				dIndices.push_back(dOffset + 0);
 				dOffset += 4;
 			}
-			else if (vy > -12) {
+			else if (vy > -13) {
 				setVertex(terrain, glm::vec3(0.0f, vy, 0.0f), offset);
 				sVertices.push_back(terrain);
 
@@ -613,8 +613,14 @@ void Terrain::generateMaze()
 	nyggz = new Texture("res/Mossy_Stone.jpg");*/
 	
 	dirt  = new Texture("res/dirt.jpg");
+
 	grass = new Texture("res/grass.jpg");
+	grassSpec = new Texture("res/grass.jpg");
+
 	snow  = new Texture("res/snow.jpg");
+	snowSpec = new Texture("res/snow.jpg");
+
+	noSpec = new Texture("res/spec.jpg");
 
 	//MAZEPIC2 GEN OG BIND(1) SKULLE VÆRT HER
 	m_Shader->setInt("material.diffuse", 0);
@@ -651,10 +657,13 @@ void Terrain::draw(glm::mat4 projection, glm::mat4 view, const float dt)
 	//m_Renderer->Draw(nVAO, nIBO, m_Shader);
 	//m_Renderer->Draw(tVAO, tIBO, m_Shader);
 	dirt->Bind(0);
+	noSpec->Bind(1);
 	m_Renderer->Draw(dVAO, dIBO, m_Shader);
 	grass->Bind(0);
+	grassSpec->Bind(1);
 	m_Renderer->Draw(gVAO, gIBO, m_Shader);
 	snow->Bind(0);
+	snowSpec->Bind(1);
 	m_Renderer->Draw(sVAO, sIBO, m_Shader);
 
 
@@ -682,10 +691,10 @@ void Terrain::Transform(float dt)
 
 void Terrain::Light(const float dt, Camera* camera)
 {
-	m_Shader->setVec3("dirLight.direction", 0.0f, 1.0f, 0.0f);
-	m_Shader->setVec3("dirLight.ambient", 0.3f, 0.3f, 0.3f);
-	m_Shader->setVec3("dirLight.diffuse", 0.7f, 0.7f, 0.7f);
-	m_Shader->setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+	m_Shader->setVec3("dirLight.direction", -0.3f, -0.5f, -0.5f);
+	m_Shader->setVec3("dirLight.ambient", 0.12f, 0.12f, 0.12f);
+	m_Shader->setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
+	m_Shader->setVec3("dirLight.specular", 0.65f, 0.65f, 0.65f);
 
 	m_Shader->setVec3("pointLight.position", glm::vec3(18.f, 1.3f, 14.f)/*camera->Position+glm::vec3(5.f,+0.7f,-25.f)*/);
 	m_Shader->setVec3("pointLight.ambient", 0.05f, 0.05f, 0.05f);
@@ -707,11 +716,11 @@ glm::vec3 Terrain::calcNormals(float x, float z)
 	float heightR = gScale->getHeight(x + 1, z);
 	float heightD = gScale->getHeight(x, z - 1);
 	float heightU = gScale->getHeight(x, z + 1);
-	glm::vec3 normal = glm::vec3(heightL - heightR, -2.0f, heightD - heightU);
+	glm::vec3 normal = glm::vec3(heightL - heightR, 10.5f, heightD - heightU);
 	normal = glm::normalize(normal);
-	//return normal;
+	return normal;
 
-	return glm::normalize(glm::vec3(x, 1, z));
+	//return glm::normalize(glm::vec3(x, 1, z));
 	//return normal;
 	//glm::vec3 n = glm::normalize(glm::vec3((heightU - heightD), (heightU - heightD) * (heightR - heightL), (heightR - heightL)));
 	//return n;
