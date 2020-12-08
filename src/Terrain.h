@@ -62,7 +62,7 @@ private:
 
 	//*******************************
 	//Landscape and everything needed
-	std::vector <Vertex>	   gVertices;
+	//std::vector <Vertex>	   gVertices;
 	std::vector <unsigned int> gIndices;
 
 	VertexArray* gVAO;
@@ -98,7 +98,7 @@ private:
 	//Shader* m_Shader;
 public:
 	//void generateFloor();
-
+	std::vector <Vertex>	   gVertices;
 	Shader* m_Shader;
 	std::vector<std::vector<int>> map2d;
 

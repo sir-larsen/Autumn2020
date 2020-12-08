@@ -5,6 +5,7 @@
 #include "src/Camera.h"
 #include "src/Renderer.h"
 #include "src/model.h"
+#include "src/Trees.h"
 
 #include "src/Terrain.h"
 #include "src/stb_image.h"
@@ -148,7 +149,10 @@ int main(void)
 	Model ghost("res/ghost/Ghost.obj");
 	Shader ghostShader/*= new Shader*/("shaders/ghostVS.glsl", "shaders/ghostFS.glsl");
 
-	Model tree("res/objects/PineTree1/Pine1.obj");
+	Shader treeShader("shaders/treeVS.glsl", "shaders/treeFS.glsl");
+	Model tree("res/objects/PineTree2/10447_Pine_Tree_v1_L3b.obj");
+	Trees trees(&tree, &terrain);
+	
 
 
 
@@ -183,6 +187,8 @@ int main(void)
 		terrain.m_Shader->use();
 		terrain.Light(deltaTime, camera, currentFrame);
 		terrain.draw(projection, view, deltaTime); //Draw call
+
+		trees.Draw(&treeShader, projection, view);
 
 		/*Drawing of ghost object*/
 		ghostShader.use();
