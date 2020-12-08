@@ -712,11 +712,14 @@ void Terrain::Transform(float dt)
 	
 }
 
-void Terrain::Light(const float dt, Camera* camera)
+void Terrain::Light(const float dt, Camera* camera, float time)
 {
 	m_Shader->setVec3("dirLight.direction", -0.3f, -0.5f, -0.5f);
-	m_Shader->setVec3("dirLight.ambient", 0.12f, 0.12f, 0.12f);
+	/*m_Shader->setVec3("dirLight.ambient", 0.12f, 0.12f, 0.12f);
 	m_Shader->setVec3("dirLight.diffuse", 0.5f, 0.5f, 0.5f);
+	m_Shader->setVec3("dirLight.specular", 0.65f, 0.65f, 0.65f);*/
+	m_Shader->setVec3("dirLight.ambient", 0.03f, 0.02f, 0.28f);
+	m_Shader->setVec3("dirLight.diffuse", sin(0.25*time-0.2), sin(0.25*time), sin(0.25*time));
 	m_Shader->setVec3("dirLight.specular", 0.65f, 0.65f, 0.65f);
 
 	m_Shader->setVec3("pointLight.position", glm::vec3(18.f, 1.3f, 14.f)/*camera->Position+glm::vec3(5.f,+0.7f,-25.f)*/);

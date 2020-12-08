@@ -111,7 +111,7 @@ public:
 	int getPelletCount() { return pelletCount; }
 	std::vector<std::vector<int>> getMap();*/
 	void Transform(float dt);
-	void Light(const float dt, Camera* camera);
+	void Light(const float dt, Camera* camera, float time);
 	//glm::vec3 findSpawn();
 private:
 	/*void countPellets();

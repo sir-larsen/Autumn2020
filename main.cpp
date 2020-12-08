@@ -173,7 +173,7 @@ int main(void)
 		glm::mat4 view = camera->GetViewMatrix();
 
 		terrain.m_Shader->use();
-		terrain.Light(deltaTime, camera);
+		terrain.Light(deltaTime, camera, currentFrame);
 		terrain.draw(projection, view, deltaTime); //Draw call
 
 		/*Drawing of ghost object*/
