@@ -62,6 +62,29 @@ Terrain::~Terrain(){
 	free(tVBLayout);
 	free(gScale);*/
 
+	free(dVAO);
+	free(dVBO);
+	free(dVBLayout);
+	free(dIBO);
+
+	free(gVAO);
+	free(gVBO);
+	free(gVBLayout);
+	free(gIBO);
+
+	free(sVAO);
+	free(sVBO);
+	free(sVBLayout);
+	free(sIBO);
+
+	free(snow);
+	free(grass);
+	free(dirt);
+
+	free(noSpec);
+	free(snowSpec);
+	free(grassSpec);
+
 }
 
 /**
@@ -732,15 +755,12 @@ void Terrain::setVertex(Vertex& v, glm::vec3 p, const glm::vec3& offset)
 	v.location = offset + p;
 	v.normals  = calcNormals(offset.x + p.x, offset.z + p.z);
 
-	if (p.x < 0.8f && p.z < 0.8f) {
+	if (p.x < 0.8f && p.z < 0.8f)
 		v.texCoords = glm::vec2(0.0f, 0.0f);
-	}
-	else if (p.x < 0.8f && p.z > 0.8f) {
+	else if (p.x < 0.8f && p.z > 0.8f)
 		v.texCoords = glm::vec2(1.0f, 0.0f);
-	}
-	else if (p.x > 0.8f && p.z > 0.8f) {
+	else if (p.x > 0.8f && p.z > 0.8f)
 		v.texCoords = glm::vec2(1.0f, 1.0f);
-	}
 	else
 		v.texCoords = glm::vec2(0.0f, 1.0f);
 }
