@@ -35,6 +35,7 @@ class Terrain
 {
 private:
 	int width, depth;
+	int treeCount = 0;
 	float step; //Step value for grid. Higher step, more distance between vertices
 
 	ScenarioLoader* m_LoadedLevel;
@@ -112,6 +113,7 @@ public:
 	std::vector<std::vector<int>> getMap();*/
 	void Transform(float dt);
 	void Light(const float dt, Camera* camera, float time);
+	int getTreeCount() { return treeCount; }
 	//glm::vec3 findSpawn();
 private:
 	/*void countPellets();

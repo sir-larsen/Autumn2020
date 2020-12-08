@@ -62,28 +62,28 @@ Terrain::~Terrain(){
 	free(tVBLayout);
 	free(gScale);*/
 
-	free(dVAO);
-	free(dVBO);
-	free(dVBLayout);
-	free(dIBO);
+	delete dVAO;
+	delete dVBO;
+	delete dVBLayout;
+	delete dIBO;
 
-	free(gVAO);
-	free(gVBO);
-	free(gVBLayout);
-	free(gIBO);
+	delete gVAO;
+	delete gVBO;
+	delete gVBLayout;
+	delete gIBO;
 
-	free(sVAO);
-	free(sVBO);
-	free(sVBLayout);
-	free(sIBO);
+	delete sVAO;
+	delete sVBO;
+	delete sVBLayout;
+	delete sIBO;
 
-	free(snow);
-	free(grass);
-	free(dirt);
+	delete snow;
+	delete grass;
+	delete dirt;
 
-	free(noSpec);
-	free(snowSpec);
-	free(grassSpec);
+	delete noSpec;
+	delete snowSpec;
+	delete grassSpec;
 
 }
 
@@ -138,6 +138,7 @@ void Terrain::makePositionsAndIndices()
 	int vertices_width = width;
 	int vertices_depth = depth;
 
+	int tree = 0;
 	for (int vx = 0; vx < vertices_width; vx++) {
 		for (int vz = 0; vz < vertices_depth; vz++) {
 			offset = glm::vec3(vx, 0.0f, vz);
@@ -196,6 +197,8 @@ void Terrain::makePositionsAndIndices()
 				sOffset += 4;
 			}
 			else {
+				tree++;
+				if (tree % 200 == 0) treeCount++;
 				setVertex(terrain, glm::vec3(0.0f, vy, 0.0f), offset);
 				gVertices.push_back(terrain);
 

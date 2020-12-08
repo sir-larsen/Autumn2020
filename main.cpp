@@ -143,8 +143,15 @@ int main(void)
 	Terrain			terrain(&scenario, &shader, &renderer, 1080, 1080, 1.0f);
 	camera =        new Camera(glm::vec3(5.0f, 0.5f, 0.0f));
 
+	std::cout << "Treecount: " << terrain.getTreeCount() << std::endl;
+
 	Model ghost("res/ghost/Ghost.obj");
 	Shader ghostShader/*= new Shader*/("shaders/ghostVS.glsl", "shaders/ghostFS.glsl");
+
+	Model tree("res/objects/PineTree1/Pine1.obj");
+
+
+
 
 
 	glfwSetTime(0);
@@ -189,6 +196,15 @@ int main(void)
 		Shader* gsPoint = &ghostShader;
 		//ghost.Draw(&(Shader)ghostShader);
 		ghost.Draw(*gsPoint);
+
+		ghostShader.setMat4("u_ProjectionMat", projection);
+		ghostShader.setMat4("u_ViewMat", view);
+		translation = glm::translate(glm::mat4(1), glm::vec3(2.0f, 0.5f, 2.0f));
+		scale = glm::scale(glm::mat4(1), glm::vec3(0.01f));
+		transformation = translation * /*rotation */ scale;
+		ghostShader.setMat4("u_TransformationMat", transformation);
+		Shader* treePoint = &ghostShader;
+		tree.Draw(*treePoint);
 
 		/*************************/
 		

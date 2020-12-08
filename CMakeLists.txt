@@ -60,7 +60,7 @@ add_executable(autumn2020
 	src/mesh.h
 	"src/Terrain.h"
 	src/Terrain.cpp
-	src/model.h "src/Ghost3D.h" "src/Ghost3D.cpp")
+	src/model.h "src/Ghost3D.h" "src/Ghost3D.cpp" "src/Trees.h" "src/Trees.cpp")
 
 
 target_compile_definitions(autumn2020 PRIVATE GLEW_STATIC)
