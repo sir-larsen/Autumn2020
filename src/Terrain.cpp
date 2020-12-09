@@ -85,6 +85,13 @@ Terrain::~Terrain(){
 	delete snowSpec;
 	delete grassSpec;
 
+	delete water;
+	delete waterSpec;
+
+	delete wVAO;
+	delete wVBO;
+	delete wVBLayout;
+	delete wIBO;
 }
 
 /**
