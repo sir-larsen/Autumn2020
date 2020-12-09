@@ -18,6 +18,7 @@ public:
 	Movobj(Terrain* m_Terrain, Model* model, int id);
 	void draw(Shader* shader, glm::mat4 projection, glm::mat4 view, float dt);
 	void setSpawn(float x, float z);
+	glm::vec3 getPos();
 	//Movement
 	//Translation
 };

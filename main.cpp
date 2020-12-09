@@ -33,6 +33,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 //*****************************************************************
 
 //void setUniforms(Maze3D* maze);
@@ -101,6 +102,8 @@ int main(void)
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //Setting callbacks
 	glfwSetCursorPosCallback(window, mouse_callback);				   //
 	glfwSetScrollCallback(window, scroll_callback);					   //
+	glfwSetKeyCallback(window, key_callback);
+	
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);       //Tell GLFW to capture our mouse
 
 	GLenum err = glewInit();
@@ -141,7 +144,7 @@ int main(void)
 	for (int i = 0; i < 3; i++) {
 		deerShaders.push_back(new Shader("shaders/gObjectsVS.glsl", "shaders/gObjectsFS.glsl"));
 		deers.push_back(new Movobj(&terrain, &deer, i));
-		deers[i]->setSpawn(10.f + i * 4, 10.f + i * 4);
+		deers[i]->setSpawn(30.f + i * 5, 30.f + i * 5);
 	}
 
 
@@ -158,6 +161,9 @@ int main(void)
 		//glClearColor(0.5f, 0.2f, 0.1f, 1.0f);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		if (camera->perspective)
+			camera->setObjPos(deers[0]->getPos());
 			
 		// pass projection matrix to shader (note that in this case it could change every frame)
 		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 2000.0f);
@@ -188,7 +194,6 @@ int main(void)
 		//ghost.Draw(&(Shader)ghostShader);
 		ghost.Draw(*gsPoint);
 		/*************************/
-		
 		
 		processInput(window);
 
@@ -382,6 +387,14 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera->ProcessKeyboard(RIGHT, deltaTime);
 
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_F && action == GLFW_PRESS) {
+		camera->togglePerspective();
+		std::cout << "Perspective: " << camera->perspective << std::endl;
+	}
 }
 
 

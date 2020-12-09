@@ -31,3 +31,8 @@ void Movobj::setSpawn(float x, float z)
 	posX = x; posZ = z;
 	posY = terrain->gScale->getHeight((int)x, (int)z);
 }
+
+glm::vec3 Movobj::getPos()
+{
+	return glm::vec3(posX, posY, posZ);
+}
