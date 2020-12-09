@@ -3,6 +3,7 @@
 #include "Terrain.h"
 #include "model.h"
 #include "terrain.h"
+#include "Global.h"
 
 class Movobj
 {
@@ -19,6 +20,7 @@ public:
 	void draw(Shader* shader, glm::mat4 projection, glm::mat4 view, float dt);
 	void setSpawn(float x, float z);
 	glm::vec3 getPos();
+	void print();
 	//Movement
 	//Translation
 };

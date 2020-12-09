@@ -179,7 +179,7 @@ void Terrain::makePositionsAndIndices()
 				dIndices.push_back(dOffset + 0);
 				dOffset += 4;
 			}
-			else if (vy > -15) {
+			else if (vy > -19) {
 				setVertex(terrain, glm::vec3(0.0f, vy, 0.0f), offset);
 				sVertices.push_back(terrain);
 

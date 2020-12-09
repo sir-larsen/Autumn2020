@@ -144,9 +144,9 @@ int main(void)
 	for (int i = 0; i < 3; i++) {
 		deerShaders.push_back(new Shader("shaders/gObjectsVS.glsl", "shaders/gObjectsFS.glsl"));
 		deers.push_back(new Movobj(&terrain, &deer, i));
-		deers[i]->setSpawn(30.f + i * 5, 30.f + i * 5);
+		deers[i]->setSpawn(350.f, 350.f + i *20);
 	}
-
+	deers[0]->print();
 
 
 	glfwSetTime(0);
@@ -181,6 +181,10 @@ int main(void)
 			deers[i]->draw(deerShaders[i], projection, view, deltaTime);
 		}
 
+		
+		
+		
+		
 		/*Drawing of ghost object*/
 		ghostShader.use();
 		ghostShader.setMat4("u_ProjectionMat", projection);
