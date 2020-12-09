@@ -3,30 +3,18 @@
 
 
 // constructor with vectors
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch, float tyaw, float tpitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
     Position = position;
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
-    tYaw = yaw;
-    tPitch = pitch;
+    tYaw = tyaw;
+    tPitch = tpitch;
     perspective = false;
     distance = 50.f;
     updateCameraVectors();
     view = glm::mat4(1);
-}
-
-// constructor with scalar values
-Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, 1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
-{
-    Position = glm::vec3(posX, posY, posZ);
-    WorldUp = glm::vec3(upX, upY, upZ);
-    Yaw = yaw;
-    Pitch = pitch;
-    perspective = false;
-    distance = 50.f;
-    updateCameraVectors();
 }
 
 // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
@@ -51,8 +39,6 @@ glm::mat4 Camera::GetViewMatrix()
     else {   
         glm::vec3 cameraPos = objPos;    
         cameraPos.x = cameraPos.x - distance; cameraPos.y = cameraPos.y + distance;
-
-        //return //glm::lookAt(cameraPos, objPos + Front, Up);
         return view;
     }
 }
@@ -121,25 +107,13 @@ void Camera::updateCameraVectors()
         Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         Up = glm::normalize(glm::cross(Right, Front));
     }
-    else {/*
-        //Front = objPos;
-        // calculate the new Front vector
-        glm::vec3 front;
-        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        front.y = /*sin(glm::radians(Pitch));*/ //0.0f;
-        /*front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        Front = glm::normalize(front);
-        // also re-calculate the Right and Up vector
-        Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-        Up = glm::normalize(glm::cross(Right, Front));*/
-
+    else {
         glm::vec3 radial;
         radial.x = cos(glm::radians(tYaw)) * cos(glm::radians(tPitch));
         radial.y = sin(glm::radians(tPitch)); 
         radial.z = sin(glm::radians(tYaw)) * cos(glm::radians(tPitch));
         dir = -radial;
     }
-    
     glm::vec3 pos = objPos - distance * dir; //Camera position
     view = glm::lookAt(pos, objPos, WorldUp);
 }

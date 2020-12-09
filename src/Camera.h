@@ -17,18 +17,21 @@ enum Camera_Movement {
 };
 
 // Default camera values
-const float YAW = -10.0f;
+const float YAW = 10.0f;
 const float PITCH = 0.0f;
 const float SPEED = 150.5f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
+
+//Related to third person camera
+const float tYAW = 50.0f;
+const float tPITCH = 20.0f;
 
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
 class Camera
 {
 public:
-    //glm::vec3 objPos;
     // camera Attributes
     glm::vec3 Position;
     glm::vec3 Front;
@@ -43,6 +46,7 @@ public:
     float MouseSensitivity;
     float Zoom;
     
+    //Attributes related to third person camera
     glm::vec3 objPos;
     bool perspective;
     float distance; //Distance from object
@@ -52,13 +56,12 @@ public:
     float tPitch;
 
 
-    Camera(glm::vec3 position = glm::vec3(0.0f, 0.35f, 3.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
-    Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
+    Camera(glm::vec3 position = glm::vec3(0.0f, 0.35f, 3.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH, float tyaw = tYAW, float tpitch = tPITCH);
     glm::mat4 GetViewMatrix();
     void ProcessKeyboard(Camera_Movement direction, float deltaTime);
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void ProcessMouseScroll(float yoffset);
-    void togglePerspective() { perspective = !perspective; std::cout << "TOGGLED!" << std::endl; }
+    void togglePerspective() { perspective = !perspective; std::cout << "PERSPECTIVE TOGGLED!" << std::endl; }
     void setObjPos(glm::vec3 pos);
 
 private:
