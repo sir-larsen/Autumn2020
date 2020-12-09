@@ -28,7 +28,7 @@ const float ZOOM = 45.0f;
 class Camera
 {
 public:
-    glm::vec3 objPos;
+    //glm::vec3 objPos;
     // camera Attributes
     glm::vec3 Position;
     glm::vec3 Front;
@@ -38,11 +38,19 @@ public:
     // euler Angles
     float Yaw;
     float Pitch;
-    // camera options
+    //camera options
     float MovementSpeed;
     float MouseSensitivity;
     float Zoom;
+    
+    glm::vec3 objPos;
     bool perspective;
+    float distance; //Distance from object
+    glm::vec3 dir;
+    glm::mat4 view;
+    float tYaw;
+    float tPitch;
+
 
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.35f, 3.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);

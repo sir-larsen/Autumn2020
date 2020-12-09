@@ -9,8 +9,12 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) : Front
     WorldUp = up;
     Yaw = yaw;
     Pitch = pitch;
+    tYaw = yaw;
+    tPitch = pitch;
     perspective = false;
+    distance = 50.f;
     updateCameraVectors();
+    view = glm::mat4(1);
 }
 
 // constructor with scalar values
@@ -21,6 +25,7 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
     Yaw = yaw;
     Pitch = pitch;
     perspective = false;
+    distance = 50.f;
     updateCameraVectors();
 }
 
@@ -39,10 +44,16 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 }
 
 glm::mat4 Camera::GetViewMatrix() 
-{   if (!perspective)
+{
+    if (!perspective) {
         return glm::lookAt(Position, Position + Front, Up);
-    else {
-        return glm::lookAt(objPos + glm::vec3(-40.0f, 40.f, 10.0f), objPos, Up);
+    }
+    else {   
+        glm::vec3 cameraPos = objPos;    
+        cameraPos.x = cameraPos.x - distance; cameraPos.y = cameraPos.y + distance;
+
+        //return //glm::lookAt(cameraPos, objPos + Front, Up);
+        return view;
     }
 }
 
@@ -51,9 +62,17 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
 {
     xoffset *= MouseSensitivity;
     yoffset *= MouseSensitivity;
-
-    Yaw += xoffset;
-    Pitch += yoffset;
+    
+    if (!perspective) {
+        Yaw += xoffset;
+        Pitch += yoffset;
+        //tYaw += xoffset;
+        //tPitch -= yoffset;
+    }
+    else {
+        tYaw += xoffset;
+        tPitch -= yoffset;
+    }
 
     // make sure that when pitch is out of bounds, screen doesn't get flipped
     if (constrainPitch)
@@ -62,6 +81,11 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
             Pitch = 89.0f;
         if (Pitch < -89.0f)
             Pitch = -89.0f;
+
+        if (tPitch > 89.0f)
+            tPitch = 89.0f;
+        if (tPitch < -89.0f)
+            tPitch = -89.0f;
     }
 
     // update Front, Right and Up Vectors using the updated Euler angles
@@ -86,18 +110,36 @@ void Camera::setObjPos(glm::vec3 pos)
 // calculates the front vector from the Camera's (updated) Euler Angles
 void Camera::updateCameraVectors()
 {
-    //if (!perspective) {
+    if (!perspective) {
         // calculate the new Front vector
         glm::vec3 front;
-        front.x = objPos.x + cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        front.y = objPos.y + sin(glm::radians(Pitch));
-        front.z = objPos.z + sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        front.y = sin(glm::radians(Pitch));
+        front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
         Front = glm::normalize(front);
         // also re-calculate the Right and Up vector
         Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         Up = glm::normalize(glm::cross(Right, Front));
-    //}
-    //else {
-    //    Front = objPos;
-    //}
+    }
+    else {/*
+        //Front = objPos;
+        // calculate the new Front vector
+        glm::vec3 front;
+        front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        front.y = /*sin(glm::radians(Pitch));*/ //0.0f;
+        /*front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+        Front = glm::normalize(front);
+        // also re-calculate the Right and Up vector
+        Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+        Up = glm::normalize(glm::cross(Right, Front));*/
+
+        glm::vec3 radial;
+        radial.x = cos(glm::radians(tYaw)) * cos(glm::radians(tPitch));
+        radial.y = sin(glm::radians(tPitch)); 
+        radial.z = sin(glm::radians(tYaw)) * cos(glm::radians(tPitch));
+        dir = -radial;
+    }
+    
+    glm::vec3 pos = objPos - distance * dir; //Camera position
+    view = glm::lookAt(pos, objPos, WorldUp);
 }
