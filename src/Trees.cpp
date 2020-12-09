@@ -12,7 +12,7 @@ void Trees::generateModelMatrices(Terrain* terrain)
 {	
 	//200 som mod-verdi
 	for (int i = 0; i < terrain->gVertices.size()-800; i++) {
-		if (i % 1100 == 0) {
+		if (i % 6000 == 0) {
 			//glm::mat4 translation; 
 			
 			if (terrain->gVertices[i].location.x < 1063 && terrain->gVertices[i].location.x > 17 &&
