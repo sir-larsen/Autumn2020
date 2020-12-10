@@ -9,7 +9,7 @@
 #include "src/Terrain.h"
 #include "src/stb_image.h"
 #include "src/Movobj.h"
-//#include "src/Aerialobj.h"
+#include "src/Aerialobj.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -148,12 +148,12 @@ int main(void)
 		deers.push_back(new Movobj(&terrain, &deer, i, &camera));
 		deers[i]->setSpawn();
 	}
-	deers[0]->print();
+	//deers[0]->print();
 	//collision.check();
 
 	Model airplane("res/objects/Plane/Plane.obj");
 	Shader planeShader("shaders/gObjectsVS.glsl", "shaders/gObjectsFS.glsl");
-	//Aerialobj plane(&airplane);
+	Aerialobj plane(&airplane);
 
 	glfwSetTime(0);
 	/* Loop until the user closes the window */
@@ -189,7 +189,7 @@ int main(void)
 			deers[i]->draw(deerShaders[i], projection, view, deltaTime, currentFrame);
 		}
 
-		//plane.draw(&planeShader, projection, view, deltaTime, currentFrame);
+		plane.draw(&planeShader, projection, view, deltaTime, currentFrame);
 
 
 
