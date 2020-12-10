@@ -1,3 +1,8 @@
+/**
+ * @file Trees.h
+ * @brief The header file for the Trees class. Responsible for instancing of trees
+ *
+ */
 #pragma once
 #include <GL/glew.h>
 #include "Terrain.h"

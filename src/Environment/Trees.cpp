@@ -1,6 +1,15 @@
+/**
+ * @file Trees.cpp
+ * @brief The source file for the Trees class
+ *
+ */
 #include "Trees.h"
 #include <iostream>
 
+/**
+ * @brief Construct a new Trees object and generates the necessary data
+ *
+ */
 Trees::Trees(Model* m_Tree, Terrain* terrain)
 {
 	tree = m_Tree;
@@ -8,11 +17,16 @@ Trees::Trees(Model* m_Tree, Terrain* terrain)
 	addModelMatrices();
 }
 
+/**
+ * @brief Generates the model matrices and also fills the 2d array map in Global.h with
+ *		  the "hitbox" data for the map
+ *
+ */
 void Trees::generateModelMatrices(Terrain* terrain)
 {	
 	//200 som mod-verdi
 	for (int i = 0; i < terrain->gVertices.size()-800; i++) {
-		if (i % 10000 == 0) {
+		if (i % 10000 == 0) { //Mod value for managing amount of trees
 			//glm::mat4 translation; 
 			
 			if (terrain->gVertices[i].location.x < 1040 && terrain->gVertices[i].location.x > 35 &&
@@ -21,26 +35,15 @@ void Trees::generateModelMatrices(Terrain* terrain)
 
 				points.push_back(terrain->gVertices[i].location); //Get all points for all trees in a vector
 				Hbox box;
-				box.lr = terrain->gVertices[i].location + glm::vec3(-20.f, 0.f, -17.f);
-				box.ll = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f, -17.f);
+				box.lr = terrain->gVertices[i].location + glm::vec3(-20.f, 0.f, -17.f);  //Generating the positions for the tree "hitbox" which will be
+				box.ll = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f, -17.f);   //Used in the 2d array map
 				box.ur = terrain->gVertices[i].location + glm::vec3(-20.f, 0.f, 17.f);
 				box.ul = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f, 17.f);
 				boxes.push_back(box);
 
-				/*box.lr = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f, -7.f);
-				box.ll = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f, -7.f);
-				box.ur = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f,  7.f);
-				box.ul = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f,  7.f);
-				boxes.push_back(box);
-				std::cout << "ul: " << box.ul.x << "," << box.ul.y << "," << box.ul.z << "                   " << "ur: " << box.ur.x << "," << box.ur.y << "," << box.ur.z << "\n\n";*/
-
-
 				glm::mat4 translation = glm::translate(glm::mat4(1), terrain->gVertices[i].location - glm::vec3(0.f, 0.8f, 0.0f)); //Pinetree2
 				glm::mat4 rotation = glm::rotate(glm::mat4(1), glm::radians(1 * -90.f), glm::vec3(1.f, 0.f, 0.f));   //For pineTree2
 				glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.060f, 0.065f, 0.085f)); //Pinetree2*/
-				/*glm::mat4 translation = glm::translate(glm::mat4(1), terrain->gVertices[i].location + glm::vec3(0.f, 30.0f, 0.0f));
-				glm::mat4 rotation = glm::rotate(glm::mat4(1), glm::radians(1 * 180.f), glm::vec3(1.f, 0.f, 0.f));
-				glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(3.0f, 3.0f, 3.0f));*/
 				glm::mat4 transformation = translation * rotation * scale;
 				modelMatrices.push_back(transformation);
 				treeCount++;
@@ -48,8 +51,8 @@ void Trees::generateModelMatrices(Terrain* terrain)
 		}
 	}
 
-	for (int i = 0; i < boxes.size(); i++) {
-		int xBeg = static_cast<int>(boxes[i].ur.x);
+	for (int i = 0; i < boxes.size(); i++) { //Going through the "hitbox" vector to position the tree areas in the 2d array map
+		int xBeg = static_cast<int>(boxes[i].ur.x); //Filling the array with respect to the coordinates so ground objects can have collisions with trees
 		int xEnd = static_cast<int>(boxes[i].ul.x);
 
 		int zBeg = static_cast<int>(boxes[i].lr.z);
@@ -57,14 +60,18 @@ void Trees::generateModelMatrices(Terrain* terrain)
 
 		for (int j = xBeg; j <= xEnd; j++) {
 			for (int k = zBeg; k <= zEnd; k++) {
-				gMap[j][k] = 1;
+				gMap[j][k] = 1; //filling with 1s to indicate occupied space
 			}
 		}
 	}
 
-	std::cout << "Treecount TREES.CPP: " << treeCount << std::endl;
+	std::cout << "Treecount TREES: " << treeCount << std::endl;
 }
 
+/*
+* @brief binds model matrices and enable attribs in the shader
+*
+*/
 void Trees::addModelMatrices()
 {
 	glGenBuffers(1, &VBO);
@@ -93,6 +100,9 @@ void Trees::addModelMatrices()
 	}
 }
 
+/*
+* @brief Draws the instanced trees
+*/
 void Trees::Draw(Shader* shader, glm::mat4 projection, glm::mat4 view)
 {
 	shader->use();
