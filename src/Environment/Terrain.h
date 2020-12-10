@@ -5,14 +5,14 @@
  * 
  */
 #pragma once
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "IndexBuffer.h"
-#include "Renderer.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "Camera.h"
+#include "../CoreGL/VertexArray.h"
+#include "../CoreGL/VertexBuffer.h"
+#include "../CoreGL/VertexBufferLayout.h"
+#include "../CoreGL/IndexBuffer.h"
+#include "../CoreGL/Renderer.h"
+#include "../CoreGL/Shader.h"
+#include "../CoreGL/Texture.h"
+#include "../Engine/Camera.h"
 
 struct Vertex {
 	glm::vec3 location;

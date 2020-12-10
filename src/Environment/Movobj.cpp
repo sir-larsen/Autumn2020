@@ -1,5 +1,5 @@
 #include "Movobj.h"
-int gMap[1200][1200];
+int gMap[1200][1200]; //Generated "map" for checking trees for collision
 
 Movobj::Movobj(Terrain* m_Terrain, Model* model, int id, Camera* camera)
 {
@@ -129,26 +129,18 @@ void Movobj::Translate(Direction dir, float dt)
 	{
 	case South: {
 		posX -= velocity; posZ = floor(posZ); rotationAngle = 180.f;
-		//posY = terrain->gScale->getHeight(round(posX), round(posY));
-		//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
 		break;
 	}
 	case West: {
 		posZ -= velocity; posX = floor(posX); rotationAngle = 90.f;
-		//posY = terrain->gScale->getHeight(round(posX), round(posY));
-		//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
 		break;
 	}
 	case North: {
 		posX += velocity; posZ = floor(posZ); rotationAngle = 0.f;
-		//posY = terrain->gScale->getHeight(round(posX), round(posY));
-		//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
 		break;
 	}
 	case East: {
 		posZ += velocity; posX = floor(posX); rotationAngle = 270.f;
-		//posY = terrain->gScale->getHeight(round(posX), round(posY));
-		//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
 		break;
 	}
 	default:    break;

@@ -1,3 +1,8 @@
+/**
+ * @file Camera.h
+ * @brief Header file for the Camera object
+ *
+ */
 #ifndef CAMERA_H
 #define CAMERA_H
 

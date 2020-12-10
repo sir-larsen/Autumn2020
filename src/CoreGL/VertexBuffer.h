@@ -1,11 +1,6 @@
 /**
  * @file VertexBuffer.h
- * @author Sebastian Lindtvedt (lindtvedt.sebastian@gmail.com)
  * @brief The header file for the VertexBuffer class
- * @version 0.1
- * @date 2020-10-12
- * 
- * @copyright Copyright (c) 2020
  * 
  */
 #pragma once

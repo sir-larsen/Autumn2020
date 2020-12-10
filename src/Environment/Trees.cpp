@@ -1,15 +1,11 @@
 #include "Trees.h"
 #include <iostream>
 
-//int gMap[1200][1200];
-
 Trees::Trees(Model* m_Tree, Terrain* terrain)
 {
 	tree = m_Tree;
 	generateModelMatrices(terrain);
 	addModelMatrices();
-	//map.resize(1120, std::vector<int>(1120));
-	
 }
 
 void Trees::generateModelMatrices(Terrain* terrain)
@@ -52,9 +48,6 @@ void Trees::generateModelMatrices(Terrain* terrain)
 		}
 	}
 
-	//x = static_cast<int>(x);
-	//z = static_cast<int>(z);
-
 	for (int i = 0; i < boxes.size(); i++) {
 		int xBeg = static_cast<int>(boxes[i].ur.x);
 		int xEnd = static_cast<int>(boxes[i].ul.x);
@@ -68,12 +61,6 @@ void Trees::generateModelMatrices(Terrain* terrain)
 			}
 		}
 	}
-	/*for (int x = 20; x < 33; x++) {
-		for (int z = 190; z < 290; z++) {
-			std::cout << gMap[x][z] << " ";
-		}
-		std::cout << "\n";
-	}*/
 
 	std::cout << "Treecount TREES.CPP: " << treeCount << std::endl;
 }

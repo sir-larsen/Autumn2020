@@ -104,20 +104,11 @@ void Texture::Unbind() const
 }
 float Texture::getHeight(int width, int depth)
 {
-	/*if (width == 0)
-		width = 1;
-	if (depth == 0)
-		depth = 1;*/
-
 	if (width < 0 || width >= getWidth() || depth < 0 || depth >= getHeight())
 		return 0;
 	else {
 
 		float elevation = static_cast<float>(*(m_LocalBuffer + ((width + m_Width * depth) * 4)));
-		//std::cout << "elevation: " << elevation << std::endl;
-		/*elevation += 255 / 2.0f;
-		elevation /= 255 / 2.0f;
-		elevation *= 40;*/
 		elevation -= 255 / 2.0f;
 		elevation /= 255 / 2.0f; //To get height between
 		elevation *= 25;

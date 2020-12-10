@@ -1,14 +1,16 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "src/Shader.h"
-#include "src/Camera.h"
-#include "src/Renderer.h"
-#include "src/model.h"
-#include "src/Trees.h"
-#include "src/Terrain.h"
-#include "src/stb_image.h"
-#include "src/Movobj.h"
-#include "src/Aerialobj.h"
+#include "src/CoreGL/Shader.h"
+#include "src/CoreGL/Renderer.h"
+#include "src/CoreGL/stb_image.h"
+
+#include "src/Environment/Trees.h"
+#include "src/Environment/Terrain.h"
+#include "src/Environment/Movobj.h"
+#include "src/Environment/Aerialobj.h"
+
+#include "src/Engine/Camera.h"
+#include "src/Engine/model.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

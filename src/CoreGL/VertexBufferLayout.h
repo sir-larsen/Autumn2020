@@ -1,11 +1,6 @@
 /**
  * @file VertexBufferLayout.h
- * @author Sebastian Lindtvedt (lindtvedt.sebastian@gmail.com)
  * @brief Header file for the VertexBufferElement
- * @version 0.1
- * @date 2020-10-12
- * 
- * @copyright Copyright (c) 2020
  * 
  */
 #pragma once

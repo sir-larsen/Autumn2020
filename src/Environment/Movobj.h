@@ -2,10 +2,9 @@
 #include <GL/glew.h>
 #include <stdlib.h>
 #include "Terrain.h"
-#include "model.h"
-#include "terrain.h"
+#include "../Engine/model.h"
 #include "Global.h"
-#include "Camera.h"
+#include "../Engine/Camera.h"
 
 
 enum Direction {

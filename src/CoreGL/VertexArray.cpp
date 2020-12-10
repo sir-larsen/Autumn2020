@@ -1,11 +1,6 @@
 /**
  * @file VertexArray.cpp
- * @author Sebastian Lindtvedt (lindtvedt.sebastian@gmail.com)
  * @brief The source file for the VertexArray class
- * @version 0.1
- * @date 2020-10-12
- * 
- * @copyright Copyright (c) 2020
  * 
  */
 #include "VertexArray.h"

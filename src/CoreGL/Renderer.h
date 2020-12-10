@@ -1,11 +1,6 @@
 /**
  * @file Renderer.h
- * @author Sebastian Lindtvedt (lindtvedt.sebastian@gmail.com)
  * @brief The header file for the Renderer class
- * @version 0.1
- * @date 2020-10-12
- * 
- * @copyright Copyright (c) 2020
  * 
  */
 #pragma once
@@ -13,7 +8,6 @@
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
-//#include "Shader2.h"
 
 /**
  * @class Renderer

@@ -1,6 +1,6 @@
 #pragma once
 #include <GL/glew.h>
-#include "model.h"
+#include "../Engine/model.h"
 
 enum Direction2 {
 	North2 = 0,

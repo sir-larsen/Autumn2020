@@ -37,29 +37,29 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res DESTINATION ${CMAKE_CURRENT_BINARY_DIR
 
 add_executable(autumn2020
 	main.cpp
-	src/Movobj.h
-	src/Movobj.cpp
+	src/Environment/Movobj.h
+	src/Environment/Movobj.cpp
 	
 	
-	src/VertexBuffer.h
-	src/VertexBuffer.cpp
-	src/IndexBuffer.h
-	src/IndexBuffer.cpp 
-	src/VertexArray.h 
-	src/VertexArray.cpp
-	src/VertexBufferLayout.h 
-	src/Renderer.h
-	src/Renderer.cpp
-	src/Texture.h
-	src/Texture.cpp
+	src/CoreGL/VertexBuffer.h
+	src/CoreGL/VertexBuffer.cpp
+	src/CoreGL/IndexBuffer.h
+	"src/CoreGL/IndexBuffer.cpp" 
+	src/CoreGL/VertexArray.h 
+	src/CoreGL/VertexArray.cpp
+	src/CoreGL/VertexBufferLayout.h 
+	src/CoreGL/Renderer.h
+	"src/CoreGL/Renderer.cpp"
+	src/CoreGL/Texture.h
+	src/CoreGL/Texture.cpp
 	 
-	src/Camera.h
-	src/Shader.h
-	src/stb_image.h
-	src/mesh.h
-	"src/Terrain.h"
-	src/Terrain.cpp
-	src/model.h   "src/Trees.h" "src/Trees.cpp" "src/Camera.cpp" "src/Global.h" "src/Aerialobj.h" "src/Aerialobj.cpp")
+	src/Engine/Camera.h
+	src/CoreGL/Shader.h
+	src/CoreGL/stb_image.h
+	src/Engine/mesh.h
+	"src/Environment/Terrain.h"
+	src/Environment/Terrain.cpp
+	src/Engine/model.h   "src/Environment/Trees.h" "src/Environment/Trees.cpp" "src/Engine/Camera.cpp" "src/Environment/Global.h" "src/Environment/Aerialobj.h" "src/Environment/Aerialobj.cpp")
 
 
 target_compile_definitions(autumn2020 PRIVATE GLEW_STATIC)

@@ -9,8 +9,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "stb_image.h"
-#include "shader.h"
+#include "../CoreGL/stb_image.h"
+#include "../CoreGL/shader.h"
 #include "mesh.h"
 
 #include <string>

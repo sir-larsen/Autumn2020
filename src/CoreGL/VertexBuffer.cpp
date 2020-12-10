@@ -1,11 +1,6 @@
 /**
  * @file VertexBuffer.cpp
- * @author Sebastian Lindtvedt (lindtvedt.sebastian@gmail.com)
  * @brief Source file for the VertexBuffer class
- * @version 0.1
- * @date 2020-10-12
- * 
- * @copyright Copyright (c) 2020
  * 
  */
 #include "VertexBuffer.h"

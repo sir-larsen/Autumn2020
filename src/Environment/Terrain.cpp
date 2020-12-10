@@ -4,24 +4,18 @@
  * 
  */
 #include "Terrain.h"
-#include "Camera.h"
+#include "../Engine/Camera.h"
 
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
-#include "Renderer.h"
+#include "../CoreGL/VertexBuffer.h"
+#include "../CoreGL/IndexBuffer.h"
+#include "../CoreGL/VertexArray.h"
+#include "../CoreGL/Renderer.h"
 
 #include <iostream>
 
 /**
- * @brief Construct a new Maze:: Maze object
- * 
- * @param loadedLevel - A ScenarioLoader containing the level file
- * @param shader 	  - The maze's shader
- * @param renderer 	  - The maze's renderer
- * 
- * @see	make2dArray();
- * @see	generateMaze();
+ * @brief Construct a new Maze:: Terrain object
+*
  */
 Terrain::Terrain(Shader* shader, Renderer* renderer, int m_depth, int breadth, float m_step)
 	: m_Renderer(renderer),
@@ -34,7 +28,7 @@ Terrain::Terrain(Shader* shader, Renderer* renderer, int m_depth, int breadth, f
 }
 
 /**
- * @brief Destroy the Maze:: Maze object
+ * @brief Destroy the terrain object
  * 
  */
 Terrain::~Terrain(){

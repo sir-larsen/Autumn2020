@@ -1,6 +1,10 @@
+/**
+ * @file Camera.h
+ * @brief Source file for the Camera class
+ *
+ */
 #pragma once
 #include "Camera.h"
-
 
 // constructor with vectors
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch, float tyaw, float tpitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
@@ -108,7 +112,7 @@ void Camera::updateCameraVectors()
         Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         Up = glm::normalize(glm::cross(Right, Front));
     }
-    else {
+    else { //Perspective calculations
         glm::vec3 radial;
         radial.x = cos(glm::radians(tYaw)) * cos(glm::radians(tPitch));
         radial.y = sin(glm::radians(tPitch)); 

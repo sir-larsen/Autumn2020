@@ -1,11 +1,6 @@
 /**
  * @file Renderer.cpp
- * @author Sebastian Lindtvedt (lindtvedt.sebastian@gmail.com)
  * @brief The source code for the Renderer class
- * @version 0.1
- * @date 2020-10-12
- * 
- * @copyright Copyright (c) 2020
  * 
  */
 #include "Renderer.h"

@@ -1,6 +1,5 @@
 /**
  * @file IndexBuffer.cpp
- * @author Sebastian Lindtvedt (lindtvedt.sebastian@gmail.com)
  * @brief Source code for the IndexBuffer class
  * @version 0.1
  * @date 2020-10-12
