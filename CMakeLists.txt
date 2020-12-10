@@ -42,8 +42,8 @@ add_executable(autumn2020
 	main.cpp
 	src/Movobj.h
 	src/Movobj.cpp
-	src/ScenarioLoader.h
-	src/ScenarioLoader.cpp
+	
+	
 	src/VertexBuffer.h
 	src/VertexBuffer.cpp
 	src/IndexBuffer.h

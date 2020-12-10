@@ -4,7 +4,6 @@
  * 
  */
 #include "Terrain.h"
-#include "ScenarioLoader.h"
 #include "Camera.h"
 
 #include "VertexBuffer.h"
