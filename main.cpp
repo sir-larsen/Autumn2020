@@ -9,6 +9,7 @@
 #include "src/Terrain.h"
 #include "src/stb_image.h"
 #include "src/Movobj.h"
+//#include "src/Aerialobj.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -98,13 +99,13 @@ int main(void)
 		glfwTerminate();
 
 		return EXIT_FAILURE;
-	}																   
+	}
 	glfwMakeContextCurrent(window);									   //Make the window's context current
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //Setting callbacks
 	glfwSetCursorPosCallback(window, mouse_callback);				   //
 	glfwSetScrollCallback(window, scroll_callback);					   //
 	glfwSetKeyCallback(window, key_callback);
-	
+
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);       //Tell GLFW to capture our mouse
 
 	GLenum err = glewInit();
@@ -137,18 +138,22 @@ int main(void)
 	Shader treeShader("shaders/treeVS.glsl", "shaders/treeFS.glsl");
 	Model  tree("res/objects/PineTree2/10447_Pine_Tree_v1_L3b.obj");
 	Trees  trees(&tree, &terrain);
-	
+
 	Model						 deer("res/objects/Deer1/12961_White-Tailed_Deer_v1_l2.obj");
 	std::vector<Shader*>         deerShaders;
 	std::vector<Movobj*>			 deers;
 
-	for (int i = 0; i < 27; i++) {
+	for (int i = 0; i < 18; i++) {
 		deerShaders.push_back(new Shader("shaders/gObjectsVS.glsl", "shaders/gObjectsFS.glsl"));
 		deers.push_back(new Movobj(&terrain, &deer, i, &camera));
-		deers[i]->setSpawn(60.f + i*10, 60.f + i *10);
+		deers[i]->setSpawn();
 	}
 	deers[0]->print();
+	//collision.check();
 
+	Model airplane("res/objects/Plane/Plane.obj");
+	Shader planeShader("shaders/gObjectsVS.glsl", "shaders/gObjectsFS.glsl");
+	//Aerialobj plane(&airplane);
 
 	glfwSetTime(0);
 	/* Loop until the user closes the window */
@@ -163,9 +168,8 @@ int main(void)
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		
 		//camera->setObjPos(deers[0]->getPos());
-			
+
 		// pass projection matrix to shader (note that in this case it could change every frame)
 		//glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 2000.0f);
 		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 2000.0f);
@@ -181,14 +185,14 @@ int main(void)
 
 		trees.Draw(&treeShader, projection, view);
 
-		for (int i = 0; i < 27; i++) {
+		for (int i = 0; i < 18; i++) {
 			deers[i]->draw(deerShaders[i], projection, view, deltaTime, currentFrame);
 		}
 
-		
-		
-		
-		
+		//plane.draw(&planeShader, projection, view, deltaTime, currentFrame);
+
+
+
 		/*Drawing of ghost object*/
 		ghostShader.use();
 		ghostShader.setMat4("u_ProjectionMat", projection);
@@ -202,7 +206,7 @@ int main(void)
 		//ghost.Draw(&(Shader)ghostShader);
 		ghost.Draw(*gsPoint);
 		/*************************/
-		
+
 		processInput(window);
 
 		glfwSwapBuffers(window);
@@ -221,11 +225,11 @@ int main(void)
 	for (auto obj : deerShaders) //Deleting pointers
 		delete obj;
 
-	//for (auto obj : deers)
-	//	delete obj;
-	
+	for (auto obj : deers)
+		delete obj;
+
 	//delete camera;
-	
+
 
 	glfwTerminate();
 	return 0;

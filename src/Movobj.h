@@ -1,10 +1,12 @@
 #pragma once
 #include <GL/glew.h>
+#include <stdlib.h>
 #include "Terrain.h"
 #include "model.h"
 #include "terrain.h"
 #include "Global.h"
 #include "Camera.h"
+
 
 enum Direction {
 	North = 0,
@@ -20,17 +22,18 @@ private:
 	int ID;
 	float  movementSpeed;
 	float  rotationAngle;
-	float posX, posY, posZ;
+	//float posX, posY, posZ;
 
-	Model*   object;
+	Model* object;
 	Terrain* terrain;
 	Camera* m_Camera;
 public:
+	float posX, posY, posZ;
 	bool firstDirection, beenAdjusted;
 	Direction direction;
 	Movobj(Terrain* m_Terrain, Model* model, int id, Camera* camera);
 	void draw(Shader* shader, glm::mat4 projection, glm::mat4 view, float dt, float ct);
-	void setSpawn(float x, float z);
+	void setSpawn();
 	glm::vec3 getPos();
 	void print();
 	void move(float dt);

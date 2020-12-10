@@ -25,10 +25,10 @@ void Trees::generateModelMatrices(Terrain* terrain)
 
 				points.push_back(terrain->gVertices[i].location); //Get all points for all trees in a vector
 				Hbox box;
-				box.lr = terrain->gVertices[i].location + glm::vec3(-30.f, 0.f, -10.f);
-				box.ll = terrain->gVertices[i].location + glm::vec3(-10.f, 0.f, -10.f);
-				box.ur = terrain->gVertices[i].location + glm::vec3(-30.f, 0.f,  10.f);
-				box.ul = terrain->gVertices[i].location + glm::vec3(-10.f, 0.f,  10.f);
+				box.lr = terrain->gVertices[i].location + glm::vec3(-20.f, 0.f, -17.f);
+				box.ll = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f, -17.f);
+				box.ur = terrain->gVertices[i].location + glm::vec3(-20.f, 0.f, 17.f);
+				box.ul = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f, 17.f);
 				boxes.push_back(box);
 
 				/*box.lr = terrain->gVertices[i].location + glm::vec3(-7.f, 0.f, -7.f);

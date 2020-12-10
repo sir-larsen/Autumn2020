@@ -6,7 +6,7 @@ Movobj::Movobj(Terrain* m_Terrain, Model* model, int id, Camera* camera)
 	object = model;
 	terrain = m_Terrain;
 	ID = id;
-	movementSpeed = 6.f;
+	movementSpeed = 9.f;
 	rotationAngle = 0.f;
 	direction = North;
 	if (ID == 0) cam = true;
@@ -24,14 +24,15 @@ void Movobj::draw(Shader* shader, glm::mat4 projection, glm::mat4 view, float dt
 	shader->setMat4("u_ViewMat", view);
 	glm::mat4 translation = glm::translate(glm::mat4(1), glm::vec3(posX, posY, posZ));
 	glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(.10f));
-	glm::mat4 rotation = glm::rotate(glm::mat4(1), glm::radians(1*-90.f), glm::vec3(1.f, 0.f, 0.f));
-	glm::mat4 transformation = translation * rotation * scale;
+	glm::mat4 rotation = glm::rotate(glm::mat4(1), glm::radians(1 * -90.f), glm::vec3(1.f, 0.f, 0.f));
+	glm::mat4 rotation2 = glm::rotate(glm::mat4(1), glm::radians(rotationAngle), glm::vec3(0.f, 1.f, 0.f));
+	glm::mat4 transformation = translation * rotation2 * rotation * scale;
 	shader->setMat4("u_TransformationMat", transformation);
 	if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
 	//m_Camera->setObjPos(glm::vec3(posX, posY, posZ));
 
 	move(dt);
-	
+
 	object->Draw(*shader);
 }
 
@@ -44,10 +45,21 @@ void Movobj::print() {
 	}
 }
 
-void Movobj::setSpawn(float x, float z)
+void Movobj::setSpawn()
 {
+	int x = rand() % 230 + 20;
+	int z = rand() % 230 + 20;
+	int d = rand() % 4;
 	posX = x; posZ = z;
 	posY = terrain->gScale->getHeight((int)x, (int)z);
+	if (d == 0)
+		direction = North;
+	else if (d == 1)
+		direction = South;
+	else if (d == 2)
+		direction = East;
+	else if (d == 3)
+		direction = West;
 }
 
 glm::vec3 Movobj::getPos()
@@ -107,7 +119,7 @@ void Movobj::move(float dt)
 	case West:  Translate(West, dt); break;
 	default:    break;
 	}
-	
+
 }
 
 void Movobj::Translate(Direction dir, float dt)
@@ -115,30 +127,30 @@ void Movobj::Translate(Direction dir, float dt)
 	float velocity = movementSpeed * dt;
 	switch (dir)
 	{
-		case South: {
-			posX -= velocity; posZ = floor(posZ); rotationAngle = 0.f;
-			//posY = terrain->gScale->getHeight(round(posX), round(posY));
-			//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
-			break;
-		}
-		case West: {
-			posZ -= velocity; posX = floor(posX); rotationAngle = 90.f;
-			//posY = terrain->gScale->getHeight(round(posX), round(posY));
-			//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
-			break;
-		}
-		case North: {
-			posX += velocity; posZ = floor(posZ); rotationAngle = 180.f;
-			//posY = terrain->gScale->getHeight(round(posX), round(posY));
-			//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
-			break;
-		}
-		case East: {
-			posZ += velocity; posX = floor(posX); rotationAngle = 270.f;
-			//posY = terrain->gScale->getHeight(round(posX), round(posY));
-			//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
-			break;
-		}
-		default:    break;
+	case South: {
+		posX -= velocity; posZ = floor(posZ); rotationAngle = 180.f;
+		//posY = terrain->gScale->getHeight(round(posX), round(posY));
+		//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
+		break;
+	}
+	case West: {
+		posZ -= velocity; posX = floor(posX); rotationAngle = 90.f;
+		//posY = terrain->gScale->getHeight(round(posX), round(posY));
+		//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
+		break;
+	}
+	case North: {
+		posX += velocity; posZ = floor(posZ); rotationAngle = 0.f;
+		//posY = terrain->gScale->getHeight(round(posX), round(posY));
+		//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
+		break;
+	}
+	case East: {
+		posZ += velocity; posX = floor(posX); rotationAngle = 270.f;
+		//posY = terrain->gScale->getHeight(round(posX), round(posY));
+		//if (cam) m_Camera->setObjPos(glm::vec3((float)posX, (float)posY, (float)posZ));
+		break;
+	}
+	default:    break;
 	}
 }
