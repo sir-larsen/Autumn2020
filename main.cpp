@@ -37,11 +37,6 @@ void processInput(GLFWwindow* window);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 //*****************************************************************
 
-//void setUniforms(Maze3D* maze);
-
-//Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-
-//Camera* camera;
 Camera camera(glm::vec3(5.0f, 0.5f, 0.0f));
 const unsigned int SCREEN_WIDTH = 1200;
 const unsigned int SCREEN_HEIGHT = 1200;
@@ -51,23 +46,9 @@ float lastX = SCREEN_WIDTH / 2.f;
 float lastY = SCREEN_HEIGHT / 2.f;
 bool firstMouse = true;
 
-/******************************/
-bool constrainMovement = true;
-bool gameover = false;
-/******************************/
-
 //Timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
-//GLuint createMaze();
-GLuint createCube(GLfloat x0, GLfloat x1, GLfloat y0, GLfloat y1);
-GLuint CompileShader(const std::string& vertexShaderSrc, const std::string& fragmentShaderSrc);
-//void Camera(const float time, const GLuint shaderprogram, float bevX, float bevY, float bevZ);
-//void Camera2(const float time, const GLuint shaderprogram, float bevX, float bevY, float bevZ);
-//void Light(const float time, const GLuint shaderprogram);
-//void Input(GLFWwindow* window, double dt);
-void CleanVAO(GLuint& vao);
 
 int main(void)
 {
@@ -102,9 +83,9 @@ int main(void)
 	}
 	glfwMakeContextCurrent(window);									   //Make the window's context current
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); //Setting callbacks
-	glfwSetCursorPosCallback(window, mouse_callback);				   //
-	glfwSetScrollCallback(window, scroll_callback);					   //
-	glfwSetKeyCallback(window, key_callback);
+	glfwSetCursorPosCallback(window,       mouse_callback);				   //
+	glfwSetScrollCallback(window,          scroll_callback);					   //
+	glfwSetKeyCallback(window,             key_callback);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);       //Tell GLFW to capture our mouse
 
@@ -118,17 +99,10 @@ int main(void)
 
 	glEnable(GL_DEPTH_TEST); //IMPORTANT FOR 3D
 
-	//Shadow stuff
-	const GLuint SHADOW_WIDTH = 1024;
-	const GLuint SHADOW_HEIGHT = 1024;
-
-
 	ScenarioLoader  scenario("levels/level0");
-	//Shader			shader("shaders/camera2.glsl");
 	Shader			shader("shaders/mazeVS.glsl", "shaders/mazeFS.glsl");
 	Renderer		renderer;
-	Terrain			terrain(&scenario, &shader, &renderer, 1080, 1080, 1.0f);
-	//camera =        new Camera(glm::vec3(5.0f, 0.5f, 0.0f));
+	Terrain			terrain(&shader, &renderer, 1080, 1080, 1.0f);
 
 	std::cout << "Treecount: " << terrain.getTreeCount() << std::endl;
 
