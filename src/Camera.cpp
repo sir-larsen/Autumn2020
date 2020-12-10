@@ -36,7 +36,8 @@ glm::mat4 Camera::GetViewMatrix()
     if (!perspective) {
         return glm::lookAt(Position, Position + Front, Up);
     }
-    else {   
+    else {
+        updateCameraVectors();
         glm::vec3 cameraPos = objPos;    
         cameraPos.x = cameraPos.x - distance; cameraPos.y = cameraPos.y + distance;
         return view;

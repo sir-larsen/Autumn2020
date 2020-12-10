@@ -40,7 +40,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 //Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
-Camera* camera;
+//Camera* camera;
+Camera camera(glm::vec3(5.0f, 0.5f, 0.0f));
 const unsigned int SCREEN_WIDTH = 1200;
 const unsigned int SCREEN_HEIGHT = 1200;
 
@@ -126,7 +127,7 @@ int main(void)
 	Shader			shader("shaders/mazeVS.glsl", "shaders/mazeFS.glsl");
 	Renderer		renderer;
 	Terrain			terrain(&scenario, &shader, &renderer, 1080, 1080, 1.0f);
-	camera =        new Camera(glm::vec3(5.0f, 0.5f, 0.0f));
+	//camera =        new Camera(glm::vec3(5.0f, 0.5f, 0.0f));
 
 	std::cout << "Treecount: " << terrain.getTreeCount() << std::endl;
 
@@ -141,10 +142,10 @@ int main(void)
 	std::vector<Shader*>         deerShaders;
 	std::vector<Movobj*>			 deers;
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 27; i++) {
 		deerShaders.push_back(new Shader("shaders/gObjectsVS.glsl", "shaders/gObjectsFS.glsl"));
-		deers.push_back(new Movobj(&terrain, &deer, i));
-		deers[i]->setSpawn(350.f, 350.f + i *20);
+		deers.push_back(new Movobj(&terrain, &deer, i, &camera));
+		deers[i]->setSpawn(60.f + i*10, 60.f + i *10);
 	}
 	deers[0]->print();
 
@@ -162,23 +163,26 @@ int main(void)
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (camera->perspective)
-			camera->setObjPos(deers[0]->getPos());
+		
+		//camera->setObjPos(deers[0]->getPos());
 			
 		// pass projection matrix to shader (note that in this case it could change every frame)
-		glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 2000.0f);
+		//glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 2000.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 2000.0f);
 
 		// camera/view transformation
-		glm::mat4 view = camera->GetViewMatrix();
+		//glm::mat4 view = camera->GetViewMatrix();
+		glm::mat4 view = camera.GetViewMatrix();
 
 		terrain.m_Shader->use();
-		terrain.Light(deltaTime, camera, currentFrame);
+		//terrain.Light(deltaTime, camera, currentFrame);
+		terrain.Light(deltaTime, &camera, currentFrame);
 		terrain.draw(projection, view, deltaTime); //Draw call
 
 		trees.Draw(&treeShader, projection, view);
 
-		for (int i = 0; i < 3; i++) {
-			deers[i]->draw(deerShaders[i], projection, view, deltaTime);
+		for (int i = 0; i < 27; i++) {
+			deers[i]->draw(deerShaders[i], projection, view, deltaTime, currentFrame);
 		}
 
 		
@@ -220,7 +224,7 @@ int main(void)
 	//for (auto obj : deers)
 	//	delete obj;
 	
-	delete camera;
+	//delete camera;
 	
 
 	glfwTerminate();
@@ -382,22 +386,34 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	/*if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->ProcessKeyboard(FORWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		camera->ProcessKeyboard(BACKWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		camera->ProcessKeyboard(LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera->ProcessKeyboard(RIGHT, deltaTime);
+		camera->ProcessKeyboard(RIGHT, deltaTime);*/
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, deltaTime);
 
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_F && action == GLFW_PRESS) {
-		camera->togglePerspective();
-		std::cout << "Perspective: " << camera->perspective << std::endl;
+		/*camera->togglePerspective();
+		std::cout << "Perspective: " << camera->perspective << std::endl;*/
+
+		camera.togglePerspective();
+		std::cout << "Perspective: " << camera.perspective << std::endl;
 	}
 }
 
@@ -427,7 +443,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	lastX = xpos;
 	lastY = ypos;
 
-	camera->ProcessMouseMovement(xoffset, yoffset);
+	//camera->ProcessMouseMovement(xoffset, yoffset);
+	camera.ProcessMouseMovement(xoffset, yoffset);
 
 }
 
@@ -435,7 +452,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	camera->ProcessMouseScroll(yoffset);
+	//camera->ProcessMouseScroll(yoffset);
+	camera.ProcessMouseScroll(yoffset);
 }
 
 void GLAPIENTRY
