@@ -17,6 +17,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <set>
+#include <vector>
 #include <iostream>
 #include <iomanip>
 
@@ -36,7 +37,7 @@ void processInput(GLFWwindow* window);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 //*****************************************************************
 
-Camera camera(glm::vec3(5.0f, 0.5f, 0.0f));
+Camera camera(glm::vec3(40.0f, 15.f, 70.0f));
 const unsigned int SCREEN_WIDTH = 1200;
 const unsigned int SCREEN_HEIGHT = 1200;
 
