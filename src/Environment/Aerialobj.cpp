@@ -14,7 +14,7 @@ Aerialobj::Aerialobj(Model* model)
 
 void Aerialobj::draw(Shader* shader, glm::mat4 projection, glm::mat4 view, float dt, float ct)
 {
-	if ((int)ct % 4 == 0)
+	if ((int)ct % 8 == 0)
 		up = !up;
 
 	shader->use();
@@ -34,7 +34,7 @@ void Aerialobj::draw(Shader* shader, glm::mat4 projection, glm::mat4 view, float
 
 void Aerialobj::setSpawn()
 {
-	posX = 100.f; posZ = 120.f; posY = 170.f;
+	posX = 100.f; posZ = 120.f; posY = 195.f;
 
 }
 
