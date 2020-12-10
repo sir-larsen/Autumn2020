@@ -98,7 +98,7 @@ int main(void)
 
 	glEnable(GL_DEPTH_TEST); //IMPORTANT FOR 3D
 
-	Shader					shader("shaders/mazeVS.glsl", "shaders/mazeFS.glsl");
+	Shader					shader("shaders/terrainVS.glsl", "shaders/terrainFS.glsl");
 	Renderer				renderer;
 	Terrain					terrain(&shader, &renderer, 1080, 1080, 1.0f);
 
