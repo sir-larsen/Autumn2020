@@ -28,10 +28,10 @@ add_subdirectory(external/assimp-5.0.0)
 
 
 # Adds the shader folder to the bin directory, making its content available for out program to read.
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
 # Adds the resource folder to the bin directory, making the content available for our program to read
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
 
 
@@ -71,3 +71,15 @@ target_link_libraries(autumn2020
   glfw
   glm
   OpenGL::GL)
+
+  add_custom_command(
+  TARGET ${PROJECT_NAME} POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_CURRENT_LIST_DIR}/res
+  ${CMAKE_CURRENT_BINARY_DIR}/res)
+
+  add_custom_command(
+  TARGET ${PROJECT_NAME} POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+  ${CMAKE_CURRENT_LIST_DIR}/shaders
+  ${CMAKE_CURRENT_BINARY_DIR}/shaders)
