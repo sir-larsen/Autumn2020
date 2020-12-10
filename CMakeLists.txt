@@ -27,9 +27,6 @@ add_subdirectory(external/assimp-5.0.0)
 
 
 
-# Adds the levels folder to the bin directory, making the content available for our program to read
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/levels DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
-
 # Adds the shader folder to the bin directory, making its content available for out program to read.
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
 

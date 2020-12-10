@@ -78,8 +78,6 @@ Terrain::~Terrain(){
 void Terrain::makePositionsAndIndices()
 {
 	gScale = new Texture(5, "res/HeightMaps/Mosjoen_Height Map.png");
-	float hoi = gScale->getHeight(10, 12);
-	std::cout << "Elevation hoi: " << hoi << std::endl;
 
 	Vertex terrain;
 	int indexOff = 0;
@@ -270,18 +268,18 @@ void Terrain::generateMaze()
 
 	m_Shader->use();
 	
-	dirt  = new Texture("res/dirt.jpg", 0);
+	dirt  = new Texture("res/textures/dirt.jpg", 0);
 
-	grass = new Texture("res/grass.jpg", 0);
-	grassSpec = new Texture("res/grass.jpg", 0);
+	grass = new Texture("res/textures/grass.jpg", 0);
+	grassSpec = new Texture("res/textures/grass.jpg", 0);
 
-	snow  = new Texture("res/snow.jpg", 0);
-	snowSpec = new Texture("res/snow.jpg", 0);
+	snow  = new Texture("res/textures/snow.jpg", 0);
+	snowSpec = new Texture("res/textures/snow.jpg", 0);
 
-	noSpec = new Texture("res/spec.jpg", 0);
+	noSpec = new Texture("res/textures/spec.jpg", 0);
 
-	water = new Texture("res/water.jpg", 1);
-	waterSpec = new Texture("res/water.jpg", 1);
+	water = new Texture("res/textures/water.jpg", 1);
+	waterSpec = new Texture("res/textures/water.jpg", 1);
 
 	m_Shader->setInt("material.diffuse", 0);
 	m_Shader->setInt("material.specular", 1);
