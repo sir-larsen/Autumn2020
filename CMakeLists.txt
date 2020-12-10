@@ -55,14 +55,14 @@ add_executable(autumn2020
 	src/Renderer.cpp
 	src/Texture.h
 	src/Texture.cpp
-	src/Shaderr.h 
+	 
 	src/Camera.h
 	src/Shader.h
 	src/stb_image.h
 	src/mesh.h
 	"src/Terrain.h"
 	src/Terrain.cpp
-	src/model.h "src/Ghost3D.h" "src/Ghost3D.cpp" "src/Trees.h" "src/Trees.cpp" "src/Camera.cpp" "src/Global.h" "src/Aerialobj.h" "src/Aerialobj.cpp")
+	src/model.h   "src/Trees.h" "src/Trees.cpp" "src/Camera.cpp" "src/Global.h" "src/Aerialobj.h" "src/Aerialobj.cpp")
 
 
 target_compile_definitions(autumn2020 PRIVATE GLEW_STATIC)

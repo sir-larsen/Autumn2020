@@ -14,8 +14,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "src/Shaderr.h"
-
 #include <set>
 #include <iostream>
 #include <iomanip>
@@ -70,7 +68,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(1200, 1200, "Assigment two - Pacman 3D", NULL, NULL);
+	window = glfwCreateWindow(1200, 1200, "Graphics exam, landscape", NULL, NULL);
 	if (!window)
 	{
 		std::cerr << "GLFW failed on window creation." << '\n';
